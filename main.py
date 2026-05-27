@@ -4,7 +4,7 @@ import pygame
 import json
 from imagelist import ImageList
 from mysprite_vs2 import MySprite
-from settings_testfile import*
+from settings import*
 pygame.init()
 
 class Menu:
