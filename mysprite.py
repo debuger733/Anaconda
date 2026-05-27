@@ -1,7 +1,92 @@
+# mysprite_vs().py
+# Importing and linking other files needed to run the game
 import pygame
 import time
+import sys
+import random
 from imagelist import ImageList
+from settings import*
 
+class Food:
+    def __init__(self, x, y, width, height, image_path, SCREEN):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.SCREEN = SCREEN
+        try:
+            self.image = pygame.image.load(image_path)
+            self.image = pygame.transform.smoothscale(self.image, [width, height])
+        except pygame.error as e:
+            print(f"Error loading food image: {e}. Using colored rectangle instead.")
+            self.image =pygame.Surface([width, height])
+            self.image.fill(red)
+
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+    def draw(self):
+        self.SCREEN.blit(self.images, (self.x, self.y))
+
+    def set_pos(self, x, y):
+        self.x = x
+        self.y = y
+        self.rect.x = x
+        self.rect.y = y
+
+    def get_rect(self):
+        return self.rect
+
+class Mysprite(pygame.sprite. Sprite):
+    def __init__(self, x, y, width, height, sprite_imagelist, SCREEN, speed=5):
+        super().__init__()
+        self.image = sprite_imagelist.get_image(0)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self._w = width
+        self._h = height
+        self.SCREEN = SCREEN
+        self.speed = speed
+        self.direction = (0, 0)
+        self.prev_x = x
+        self.prev_y = y
+        
+    def move(self, dx, dy):
+        if (dx, dy) != (0, 0):
+            if not (self.direction[0] == -dx and self.direction[1] == -dy):
+                self.direction = (dx, dy)
+
+    def update(self):
+
+        self.prev_x = self.rect.x
+        self.prev_y = self.rect.y
+        
+        dx, dy = self.direction
+        self.rect.x += dx * self.tile_size
+        self.rect.y += dy * self.tile_size
+
+    def animate(self, sprite_imagelist):
+        self.image = sprite_imagelist.get_image(0)
+
+    def collide(self, other_rect):
+        return self.rect.colliderect(other_rect)
+
+    def get_x(self):
+        return self.rect.x
+
+    def get_y(self):
+        return self.rect.y
+
+    def get_w(self):
+        return self._w
+
+    def get_h(self):
+        return self._h
+
+    def get_rect(self):
+        return self.rect
 class MySprite():
     def __init__(self,x,y,w,h,images,screen):
         self.xd=0
@@ -15,8 +100,6 @@ class MySprite():
         self._move_delay = 0
         self._next_move = time.time()
         self._repeat= False
-        SCREEN_WIDTH=1000
-        SCREEN_HEIGHT=720
 
         if x>=0 and x<=SCREEN_WIDTH:
             self._x = x
@@ -88,9 +171,9 @@ class MySprite():
 
     def collide (self, x, y, w, h):
         if x>self._x + self._w or\
-           y > self.__y + self.__h or\
-           x + w < self.__x or \
-            y + h < self.__y:
+           y > self._y + self._h or\
+           x + w < self._x or \
+            y + h < self._y:
             return False
         else:
             return True
@@ -104,79 +187,96 @@ class MySprite():
         
 
     def set_animation(self, start_frame, end_frame=0, delay=0, repeat=1):
-        if start_frame >=0 and start_frame < len(self._images.images):
+        if start_frame >= 0 and start_frame < len(self._images.images):
             self._start_frame = start_frame
+            self._current_frame = start_frame  # Initialize to start frame
 
-        if end_frame >=0 and end_frame < len(self._images.images) and start_frame <= end_frame:
+        if end_frame >= 0 and end_frame < len(self._images.images) and start_frame <= end_frame:
             self._end_frame = end_frame
+        else:
+            self._end_frame = len(self._images.images) - 1  # Default to last frame
 
-        if delay >=0:
+        if delay >= 0:
             self._delay = delay
 
         if repeat:
-            self._delay = True
+            self._repeat = True
         else:
             self._repeat = False
 
         self._next_frame = time.time() + delay
 
 
-    def animate(self, reset_animation = False):
-        # If we are animating
+    def animate(self, reset_animation=False):
         if reset_animation == True:
-        # If we are resetting the animation 
             self._current_frame = self._start_frame
         else:
-            if time.time()> self._next_frame:
-                # go to the next frame 
-                pass
-
-        self_next_frame = self._next_frame +self._delay
+            if time.time() > self._next_frame:
+                self._current_frame += 1
+                # Keep frame within bounds
+                if self._current_frame > self._end_frame:
+                    if self._repeat:
+                        self._current_frame = self._start_frame
+                    else:
+                        self._current_frame = self._end_frame  # Clamp to last frame
+                self._next_frame = self._next_frame + self._delay
 
     def get_rect(self):
         return pygame.Rect(self._x, self._y, self._h, self._w)
 
     def draw(self):
+        # Safety check: ensure current_frame is valid
+        if self._current_frame >= len(self._images.images):
+            self._current_frame = len(self._images.images) - 1
         self._screen.blit(self._images.images[self._current_frame], self.get_rect())
 
-
-
 # module testing code
-if __name__ =="__main__":
-    SCREEN_WIDTH=1000
-    SCREEN_HEIGHT=720
-    TEST_X=50
-    TEST_Y=50
-    TEST_W=64
-    TEST_H=64
-    TEST_FILES = "images\\test\\test"
+if __name__ == "__main__":
+    SPRITE_FILES = "images\\sprite\\sprite"
 
-    # init pygame
     pygame.init()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
+    pygame.display.set_caption("Mysprite")
 
-    # OPEN A WINDOW
-    screen=pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
-    pygame.display.set_caption('Testing the MySprite Class')
-
-    # load any image lists needed
-    test_imagelist = ImageList(TEST_FILES, TEST_W, TEST_H)
-    # set up any sprites we're using
+    test_imagelist = ImageList(SPRITE_FILES, TEST_W, TEST_H)
     sprite_list = []
     sprite_list.append(MySprite(TEST_X, TEST_Y, TEST_W, TEST_H, test_imagelist, screen))
-    sprite_list[-1].set_animation( 0 , 3, 0.5)
+    sprite_list[-1].set_animation(0, 3, 0.5)
+    
+    class Food(MySprite):
+        def __init__(self, x, y, w, h, images, screen):
+            super().__init__(x, y, w, h, ImageList(images, w, h), screen)
+    
+        def draw(self):
+            self._screen.blit(self._images.images[0], self.get_rect())
 
-    # loop while not quitting
+    def food_collision(head, food):
+        head_rect = head.get_rect()
+        food_rect = food.get_rect()
+        return head_rect.colliderect(food_rect)
+
+    def grow_snake(segments, SPRITE_FILES, screen):
+        last = segments[-1]
+        new_segment = MySprite(last.get_x(), last.get_y(), 16, 16, ImageList(SPRITE_FILES, 16, 16), screen)
+        segments.append(new_segment)
+
+    food = Food(200, 200, 16, 16, "images\\sprite\\egg.jpg", screen)
+    snake_segments = [MySprite(100, 100, 16, 16, test_imagelist, screen)]
+
     done = False
+    clock = pygame.time.Clock()
     while not done:
-        # check the event queue for a quit
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
-            # draw any sprites
-            # animate any sprites
-            # move any sprites
-
-            # display the next screen    
-
+                if food_collision(snake_segments[0], food):
+                    grow_snake(snake_segments, SPRITE_FILES, screen)
+                food.set_pos(random.randint(0, 984), random.randint(0, 704))
+            
+        for sprite in sprite_list:
+            sprite.animate()
+            sprite.draw()
+            
+        pygame.display.flip()
+        clock.tick(60)
     pygame.quit()
-

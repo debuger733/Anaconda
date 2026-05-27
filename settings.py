@@ -1,56 +1,44 @@
-#defaults
-import json
 import pygame
-import time
 
+# settings.py
+# Setting up the window
+# Initial window size and brightness
+SCREEN_WIDTH= 800
+SCREEN_HEIGHT=600
 DEFAULTS = {"brightness": 100}
 MIN_BRIGHTNESS=1
-#constants
-TEST_FILENAME="test.json"
+SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
 
-class Settings():
-    def __init__(self,filename,):
-        self. _filename=filename
-        self._settings= DEFAULTS
-        #check for the file and load settings
-    def write_settings(self):
-        result= self.write_json(self._filename,self._settings)
+# Size of each tile
+ts=20
 
-    def read_settings(self,filename):
-        result= self.read_json(filename)
-        if result is not None:
-            self._settings = result
+# Color codes
+green1= (0, 200, 0)
+green2= (0, 150, 0)
+red = (255, 0, 0)
+blue = (0, 0, 255)
 
-    def write_json(self,filename,object):
-        try: 
-            output_file=open(filename, "w", encoding="utf-8")
-            output_file.write(json.dumps(object))
-            output_file.close()
+# Initial Sprite size and speed
+snake_size= 30
+PLAYER_SPEED = 5
 
-        except:
-            print("fail to open")
-            #or output_file.write("")
-    
-    def read_json(self,filename):
-        try:
-            output_file=open(filename, "r", encoding="utf-8")
-            json_text = output_file.read()
-            the_object = json.loads(json_text)
+# Size of sprites used
+TEST_X = 50
+TEST_Y = 50
+TEST_W = 64
+TEST_H = 64
 
-            output_file.close()
-            return the_object
-        except:
-            print("failibng to read")
-            return None
-        
-    def get_brightness(self):
-        return self._settings ["brightness"]
-    def set_brightness(self,brightness):
-        if brightness <MIN_BRIGHTNESS:
-            print("invalid brightness")
-            exit()
+# Properties of the main menu buttons
+button_width = 100
+button_height = 50
+button_spacing = 50
+button_color = (200, 200, 200)
+button_text_color = (0, 0, 0)
 
-    from os.path import exists
+# Image file paths 
+SPRITE_FILES = "code/images/sprite/sprite"
+IMAGE_PATH = "code/images/sprite/egg.jpg"
 
-    if __name__ =="__main__":
-            print("testing not yet implement")
+# Food
+FOOD_W = 30
+FOOD_H = 30
