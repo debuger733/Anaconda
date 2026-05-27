@@ -2,9 +2,73 @@
 # Importing and linking other files needed to run the game
 import pygame
 import time
+import sys
 import random
 from imagelist import ImageList
 from settings_testfile import*
+
+class Food:
+    def __init__(self, x, y, width, height, image_path, SCREEN):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.SCREEN = SCREEN
+        try:
+            self.image = pygame.image.load(image_path)
+            self.image = pygame.transform.smoothscale(self.image, [width, height])
+        except pygame.error as e:
+            print(f"Error loading food image: {e}. Using colored rectangle instead.")
+            self.image =pygame.Surface([width, height])
+            self.image.fill(red)
+
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+    def draw(self):
+        self.SCREEN.blit(self.images, (self.x, self.y))
+
+    def set_pos(self, x, y):
+        self.x = x
+        self.y = y
+        self.rect.x = x
+        self.rect.y = y
+
+    def get_rect(self):
+        return self.rect
+
+class Mysprite(pygame.sprite. Sprite)
+    def __init__(self, x, y, width, height, sprite_imagelist, SCREEN, speed=5):
+        super().__init__()
+        self.image = sprite_imagelist.get_image(0)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self._w = width
+        self._h = height
+        self.SCREEN = SCREEN
+        self.speed = speed
+        self.direction = (0, 0)
+        self.prev_x = x
+        self.prev_y = y
+    def move(self):
+
+    def update(self):
+    
+    def animate(self):
+
+    def collide(self):
+
+    def get_x(self):
+    
+    def get_y(self):
+
+    def get_w(self):
+
+    def get_h(self):
+
+    def get_rect(self):
 
 class MySprite():
     def __init__(self,x,y,w,h,images,screen):

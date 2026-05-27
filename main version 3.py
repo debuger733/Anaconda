@@ -3,7 +3,7 @@
 import pygame
 import json
 from imagelist import ImageList
-from mysprite import MySprite
+from mysprite_vs2 import MySprite
 from settings_testfile import*
 pygame.init()
 
@@ -37,35 +37,34 @@ class Menu:
 
     def show_menu(self):
         self.update_button_positions()
+    def play(self):
+        difficulty_menu = DifficultyMenu(SCREEN)
+        selected_speed = difficulty_menu.show()
+        
+        if selected_speed is None:
+            return
 
+        try:
+            food = Food(200, 200, FOOD_W, FOOD_H, IMAGE_PATH, SCREEN)
+            test_imagelist = ImageList(SPRITE_FILES, TEST_W, TEST_H)
+            snake_segments = [MySprite(100, 100, TEST_W, TEST_H, test_imagelist, SCREEN)]
+            game_loop = GameLoop(snake_segments, food, SCREEN, test_imagelist, selected_speed)
+            game_loop.run()
+        except Exception as e:
+            print(f"Error starting game: {e}")
 
-window=pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
-    # set up any sprites we're using
-try:
-    game_icon=pygame.image.load('snake_icon.png')
-    pygame.display.set_icon(game_icon)
-except FileNotFoundError:
-    print("This file cannot be loaded")
-    
-def draw_checkerboard(surface):
+    def customize(self):
+        print("Customize button clicked")
 
-    for y in range(0,SCREEN_HEIGHT, ts):
-        for x in range(0, SCREEN_WIDTH, ts):
-            if (x//ts+y//ts)% 2==0:\
-                color= green1
-            else:
-                color=green2
-        pygame.draw.rect(surface, color, (x,y,ts,ts)) # Drawing the rectangle
+    def info(self):
+        print("This is a simple snake game")
+        print(f"Sprite files location: {SPRITE_FILES}")
+        print(f"Image path: {IMAGE_PATH}")
 
+    def exit_game(self):
 
-running=True
-clock=pygame.time.Clock()
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-                
-        draw_checkerboard(window)
+        return "exit"
+
         pygame.display.flip()
         clock.tick(60) # FPS
 pygame.quit()
