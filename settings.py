@@ -42,3 +42,6 @@ IMAGE_PATH = "code/images/sprite/egg.jpg"
 # Food
 FOOD_W = 30
 FOOD_H = 30
+
+# Clock
+clock = pygame.time.Clock()

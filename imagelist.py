@@ -7,10 +7,13 @@ class ImageList():
         self._images=[]
         count = 0
         while exists(filename+str(count)+ '.jpg'):
-            image = pygame.image.load(filename+str(count)+ '.jpg')
-            scaled = pygame.transform.smoothscale(image,[width,height])
-            self._images.append(scaled)
-            count +=1
+            try:
+                image = pygame.image.load(filename+str(count)+ '.jpg')
+                scaled = pygame.transform.smoothscale(image,[width,height])
+                self._images.append(scaled)
+                count +=1
+            except pygame.error as e:
+                print(f"Error loading image {filename}{count}.jpg: {e}"   )
 
     def get_images(self):
         return self._images

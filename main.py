@@ -2,8 +2,9 @@
 # Importing and linking other files needed to run the game
 import pygame
 import json
+import time
 from imagelist import ImageList
-from mysprite_vs2 import MySprite
+from mysprite import Mysprite, DifficultyMenu,Food
 from settings import*
 pygame.init()
 
@@ -47,7 +48,7 @@ class Menu:
         try:
             food = Food(200, 200, FOOD_W, FOOD_H, IMAGE_PATH, SCREEN)
             test_imagelist = ImageList(SPRITE_FILES, TEST_W, TEST_H)
-            snake_segments = [MySprite(100, 100, TEST_W, TEST_H, test_imagelist, SCREEN)]
+            snake_segments = [Mysprite(100, 100, TEST_W, TEST_H, test_imagelist, SCREEN)]
             game_loop = GameLoop(snake_segments, food, SCREEN, test_imagelist, selected_speed)
             game_loop.run()
         except Exception as e:
@@ -65,6 +66,6 @@ class Menu:
 
         return "exit"
 
-        pygame.display.flip()
-        clock.tick(60) # FPS
+    pygame.display.flip()
+    clock.tick(60) # FPS
 pygame.quit()
