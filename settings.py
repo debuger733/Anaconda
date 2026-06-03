@@ -17,6 +17,16 @@ green1= (0, 200, 0)
 green2= (0, 150, 0)
 red = (255, 0, 0)
 blue = (0, 0, 255)
+white = (255, 255, 255)
+grey=  (128, 128, 128)
+black= (0, 0, 0)
+# Background checkerboard colors
+CHECKERBOARD_TILE_SIZE = 50
+BACKGROUND_MODES = {
+    "grey_white": {"color1": grey, "color2": white},
+    "green_dark": {"color1": green1, "color2": green2},
+    "black_white": {"color1": black, "color2": white}
+}
 
 # Initial Sprite size and speed
 snake_size= 30

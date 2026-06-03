@@ -121,6 +121,47 @@ class DifficultyMenu:
                 60
             )
             self.button_rects.append(button_rect)
+    
+    def show(self):
+        selecting= True
+        while selecting:
+            mouse_pos = pygame.mouse.get_pos()
+            self.hovered_button = None
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return None
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        for i, button_rect in enumerate(self.button_rects):
+                            if button_rect.collidepoint(event.pos):
+                                self.selected_difficulty = self.difficulties[i]["speed"]
+                                selecting = False
+                                break
+            
+            for i, button_rect in enumerate(self.button_rects):
+                if button_rect.collidepoint(mouse_pos):
+                    self.hovered_button = i
+                    break
+            
+            self.screen.fill((50, 50, 50))
+            
+            title = self.title_font.render("Select Difficulty", True, white)
+            title_rect = title.get_rect(center=(self.screen.get_width() // 2, 50))
+            self.screen.blit(title, title_rect)
+
+            for i, button_rect in enumerate(self.button_rects):
+                button_color = (120, 120, 120) if i == self.hovered_button else (100, 100, 100)
+                pygame.draw.rect(self.screen, button_color, button_rect)
+                pygame.draw.rect(self.screen, white, button_rect, 3)
+                
+                text = self.font.render(self.difficulties[i]["label"], True, white)
+                text_rect = text.get_rect(center=button_rect.center)
+                self.screen.blit(text, text_rect)
+            
+                pygame.display.flip()
+                clock.tick(60)
+            return self.selected_difficulty
 # module testing code
 if __name__ == "__main__":
     SPRITE_FILES = "images\\sprite\\sprite"
