@@ -19,6 +19,8 @@ class ImageList():
         return self._images
     images = property(get_images, None, None)
 
+# To do: Add the logo
+
 # testing
 if __name__ =="__main__":
     SCR_X = 1000

@@ -183,4 +183,4 @@ class GameLoop:
             segment.snake_color= SNAKE_COLORS.get(snake_color, green1)
         pygame.display.flip()
         clock.tick(60)
-    pygame.quit()
+    pygame.quit() # To do: test the gameloop fixing errors on the main

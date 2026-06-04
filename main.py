@@ -6,11 +6,13 @@ from mysprite import Mysprite, DifficultyMenu,Food, GameLoop
 from settings import*
 pygame.init()
 
+# Creating the menu screen
 class Menu:
     def __init__(self, screen):
         self.screen = screen
         self.font = pygame.font.Font(None, 25)
-        
+
+        # Buttons
         self.menu_options = [
             {"label": "Play", "command": self.play},
             {"label": "Customize", "command": self.customize},
@@ -18,6 +20,8 @@ class Menu:
             {"label": "Exit", "command": self.exit_game}
         ]
         self.button_rects = []
+
+        # Button positioning
     def update_button_positions(self):
         self.button_rects = []
         BUTTON_X = (self.screen.get_width() - button_width) // 2
@@ -36,20 +40,21 @@ class Menu:
 
     def show_menu(self):
         self.update_button_positions()
+
     def play(self):
         difficulty_menu = DifficultyMenu(SCREEN)
         selected_speed = difficulty_menu.show()
         
         if selected_speed is None:
             return
-
         try:
             food = Food(200, 200, FOOD_W, FOOD_H, IMAGE_PATH, SCREEN)
             test_imagelist = ImageList(SPRITE_FILES, TEST_W, TEST_H)
             snake_segments = [Mysprite(100, 100, TEST_W, TEST_H, test_imagelist, SCREEN, selected_speed, self.selected_snake_color)]#
             game_loop = GameLoop(snake_segments, food, SCREEN, test_imagelist, selected_speed, self.selected_snake_color, self.selected_background)
             game_loop.run()
-            # create the gameover screen
+            # To do: create the gameover screen
+            # Represent an error message if the game cannot be loaded due to errors
         except Exception as e:
             print(f"Error starting game: {e}")
 
@@ -62,9 +67,19 @@ class Menu:
         print(f"Image path: {IMAGE_PATH}")
 
     def exit_game(self):
-
         return "exit"
 
+    def main():
+        pygame.init()
+        pygame.display.set_caption("Snake core")
+
+        menu = Menu (SCREEN)
+        menu.show_menu()
+
+        game_running = True
+        while game_running:
+            mouse_pos = pygame.mouse.get_pos()
+            # To do: Work on completeing the while loop
     pygame.display.flip()
     clock.tick(60) # FPS
 pygame.quit()

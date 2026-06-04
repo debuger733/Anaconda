@@ -1,5 +1,4 @@
 import pygame
-
 # settings.py
 # Setting up the window
 # Initial window size and brightness
