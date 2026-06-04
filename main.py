@@ -4,7 +4,7 @@ import pygame
 import json
 import time
 from imagelist import ImageList
-from mysprite import Mysprite, DifficultyMenu,Food
+from mysprite import Mysprite, DifficultyMenu,Food, GameLoop
 from settings import*
 pygame.init()
 
@@ -48,9 +48,10 @@ class Menu:
         try:
             food = Food(200, 200, FOOD_W, FOOD_H, IMAGE_PATH, SCREEN)
             test_imagelist = ImageList(SPRITE_FILES, TEST_W, TEST_H)
-            snake_segments = [Mysprite(100, 100, TEST_W, TEST_H, test_imagelist, SCREEN)]
-            game_loop = GameLoop(snake_segments, food, SCREEN, test_imagelist, selected_speed)
+            snake_segments = [Mysprite(100, 100, TEST_W, TEST_H, test_imagelist, SCREEN, selected_speed, self.selected_snake_color)]#
+            game_loop = GameLoop(snake_segments, food, SCREEN, test_imagelist, selected_speed, self.selected_snake_color, self.selected_background)
             game_loop.run()
+            # create the gameover screen
         except Exception as e:
             print(f"Error starting game: {e}")
 
