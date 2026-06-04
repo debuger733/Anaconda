@@ -162,53 +162,25 @@ class DifficultyMenu:
                 pygame.display.flip()
                 clock.tick(60)
             return self.selected_difficulty
-# module testing code
-if __name__ == "__main__":
-    SPRITE_FILES = "images\\sprite\\sprite"
+class GameLoop:
+    def __init__(self, snake_segments, food, SCREEN, sprite_imagelist, difficulty_speed, snake_color="green", background_mode="grey_white"):
+        self.snake_segments = snake_segments
+        self.food = food
+        self.SCREEN = SCREEN
+        self.sprite_imagelist = sprite_imagelist
+        self.clock = pygame.time.Clock()
+        self.difficulty_speed = difficulty_speed
+        self.score = 0
+        self.font = pygame.font.Font(None, 36)
+        self.game_over = False
+        self.snake_color = snake_color
+        self.background_mode = background_mode
 
-    pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
-    pygame.display.set_caption("Mysprite")
+        self.position_history = [(snake_segments[0].rect.x, snake_segments[0].rect.y)]
 
-    test_imagelist = ImageList(SPRITE_FILES, TEST_W, TEST_H)
-    sprite_list = []
-    sprite_list.append(MySprite(TEST_X, TEST_Y, TEST_W, TEST_H, test_imagelist, screen))
-    sprite_list[-1].set_animation(0, 3, 0.5)
-    
-    class Food(MySprite):
-        def __init__(self, x, y, w, h, images, screen):
-            super().__init__(x, y, w, h, ImageList(images, w, h), screen)
-    
-        def draw(self):
-            self._screen.blit(self._images.images[0], self.get_rect())
-
-    def food_collision(head, food):
-        head_rect = head.get_rect()
-        food_rect = food.get_rect()
-        return head_rect.colliderect(food_rect)
-
-    def grow_snake(segments, SPRITE_FILES, screen):
-        last = segments[-1]
-        new_segment = MySprite(last.get_x(), last.get_y(), 16, 16, ImageList(SPRITE_FILES, 16, 16), screen)
-        segments.append(new_segment)
-
-    food = Food(200, 200, 16, 16, "images\\sprite\\egg.jpg", screen)
-    snake_segments = [MySprite(100, 100, 16, 16, test_imagelist, screen)]
-
-    done = False
-    clock = pygame.time.Clock()
-    while not done:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                done = True
-                if food_collision(snake_segments[0], food):
-                    grow_snake(snake_segments, SPRITE_FILES, screen)
-                food.set_pos(random.randint(0, 984), random.randint(0, 704))
-            
-        for sprite in sprite_list:
-            sprite.animate()
-            sprite.draw()
-            
+        for segment in self.snake_segments:
+            segment.speed = difficulty_speed
+            segment.snake_color= SNAKE_COLORS.get(snake_color, green1)
         pygame.display.flip()
         clock.tick(60)
     pygame.quit()

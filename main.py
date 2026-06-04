@@ -1,8 +1,6 @@
 # main.py
 # Importing and linking other files needed to run the game
 import pygame
-import json
-import time
 from imagelist import ImageList
 from mysprite import Mysprite, DifficultyMenu,Food, GameLoop
 from settings import*

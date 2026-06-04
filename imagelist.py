@@ -14,7 +14,7 @@ class ImageList():
                 count +=1
             except pygame.error as e:
                 print(f"Error loading image {filename}{count}.jpg: {e}"   )
-
+# Create a place holder surface if no image is found
     def get_images(self):
         return self._images
     images = property(get_images, None, None)

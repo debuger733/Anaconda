@@ -20,6 +20,8 @@ blue = (0, 0, 255)
 white = (255, 255, 255)
 grey=  (128, 128, 128)
 black= (0, 0, 0)
+orange = (255, 165, 0)
+
 # Background checkerboard colors
 CHECKERBOARD_TILE_SIZE = 50
 BACKGROUND_MODES = {
@@ -31,6 +33,14 @@ BACKGROUND_MODES = {
 # Initial Sprite size and speed
 snake_size= 30
 PLAYER_SPEED = 5
+
+# Snake color mapping
+SNAKE_COLORS = {
+    "green": green1,
+    "blue": blue,
+    "orange": orange,
+    "red": red
+}
 
 # Size of sprites used
 TEST_X = 50
