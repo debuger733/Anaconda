@@ -20,6 +20,7 @@ white = (255, 255, 255)
 grey=  (128, 128, 128)
 black= (0, 0, 0)
 orange = (255, 165, 0)
+yellow = (255, 255, 0)
 
 # Background checkerboard colors
 CHECKERBOARD_TILE_SIZE = 50

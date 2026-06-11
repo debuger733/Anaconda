@@ -3,6 +3,7 @@
 import pygame
 from imagelist import ImageList
 from mysprite import Mysprite, DifficultyMenu,Food, GameLoop
+from button_info import InstructionsScreen, GameOverScreen
 from settings import*
 pygame.init()
 
@@ -12,6 +13,9 @@ class Menu:
         self.screen = screen
         self.font = pygame.font.Font(None, 25)
 
+        # Remove this soon as i set the default colors
+        self.selected_snake_color= None
+        self.selected_background_color= None
         # Buttons
         self.menu_options = [
             {"label": "Play", "command": self.play},
@@ -62,24 +66,28 @@ class Menu:
         print("Customize button clicked")
 
     def info(self):
-        print("This is a simple snake game")
-        print(f"Sprite files location: {SPRITE_FILES}")
-        print(f"Image path: {IMAGE_PATH}")
+        instructions = InstructionsScreen(SCREEN)
+        instructions.show()
 
     def exit_game(self):
         return "exit"
 
-    def main():
-        pygame.init()
-        pygame.display.set_caption("Snake core")
+def main():
+    pygame.init()
+    pygame.display.set_caption("Snake core")
+    
+    menu = Menu(SCREEN)
+    menu.show_menu()
+    
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        
+        pygame.display.flip()
+    
+    pygame.quit()
 
-        menu = Menu (SCREEN)
-        menu.show_menu()
-
-        game_running = True
-        while game_running:
-            mouse_pos = pygame.mouse.get_pos()
-            # To do: Work on completeing the while loop
-    pygame.display.flip()
-    clock.tick(60) # FPS
-pygame.quit()
+if __name__ == "__main__":
+    main()

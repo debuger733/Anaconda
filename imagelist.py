@@ -19,7 +19,7 @@ class ImageList():
         return self._images
     images = property(get_images, None, None)
 
-# To do: Add the logo
+# To do: Add the logo from images
 
 # testing
 if __name__ =="__main__":
