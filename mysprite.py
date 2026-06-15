@@ -1,8 +1,6 @@
-# mysprite_vs().py
+# myspritepy
 # Importing and linking other files needed to run the game
 import pygame
-import time
-import sys
 import random
 from imagelist import ImageList
 from settings import*
@@ -38,8 +36,8 @@ class Food:
     def get_rect(self):
         return self.rect
 
-class Mysprite(pygame.sprite. Sprite):
-    def __init__(self, x, y, width, height, sprite_imagelist, SCREEN, speed=5):
+class Mysprite(pygame.sprite.Sprite):
+    def __init__(self, x, y, width, height, sprite_imagelist, SCREEN, speed=5, snake_color="green"):
         super().__init__()
         self.image = sprite_imagelist.get_image(0)
         self.rect = self.image.get_rect()
@@ -52,6 +50,8 @@ class Mysprite(pygame.sprite. Sprite):
         self.direction = (0, 0)
         self.prev_x = x
         self.prev_y = y
+        self.snake_color= SNAKE_COLORS.get(snake_color,green1)
+        self.tile_size= snake_size
         
     def move(self, dx, dy):
         if (dx, dy) != (0, 0):
@@ -59,10 +59,8 @@ class Mysprite(pygame.sprite. Sprite):
                 self.direction = (dx, dy)
 
     def update(self):
-
         self.prev_x = self.rect.x
-        self.prev_y = self.rect.y
-        
+        self.prev_y = self.rect.y 
         dx, dy = self.direction
         self.rect.x += dx * self.tile_size
         self.rect.y += dy * self.tile_size
@@ -108,7 +106,7 @@ class DifficultyMenu:
 
     def update_button_positions(self):
         # Position of the buttons
-        BUTTON_X = (self.screen.get_width()-150//2)
+        BUTTON_X = (self.screen.get_width()//2+15) # positioning of the button easy, medium and hard
         button_count =  len(self.difficulties)
         button_total_height = button_count * (60 + 30)
         button_y_offset = (self.screen.get_height() - button_total_height) // 2
@@ -159,9 +157,10 @@ class DifficultyMenu:
                 text_rect = text.get_rect(center=button_rect.center)
                 self.screen.blit(text, text_rect)
             
-                pygame.display.flip()
-                clock.tick(60)
-            return self.selected_difficulty
+            pygame.display.flip()
+            clock.tick(60)
+        return self.selected_difficulty
+        
 class GameLoop:
     def __init__(self, snake_segments, food, SCREEN, sprite_imagelist, difficulty_speed, snake_color="green", background_mode="grey_white"):
         self.snake_segments = snake_segments

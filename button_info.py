@@ -1,8 +1,5 @@
 import pygame
-import sys
-from imagelist import ImageList
-from mysprite import Mysprite, GameLoop, Food, DifficultyMenu
-from settings import *
+from settings import*
 import json
 import os
 pygame.init()
@@ -13,7 +10,7 @@ class GameOverScreen:
         self.screen = screen
         self.score = score
         self.player_name = player_name
-        self.difficulty = difficulty
+        self= difficulty
         self.font = pygame.font.Font(None, 50)
         self.small_font = pygame.font.Font(None, 30)
         self.button_font = pygame.font.Font(None, 35) 
@@ -105,6 +102,7 @@ class GameOverScreen:
             
             pygame.display.flip()
             clock.tick(60)
+
 class ExitConfirmDialog:
     def __init__(self, screen):
         self.screen = screen
@@ -169,6 +167,7 @@ class ExitConfirmDialog:
             
             pygame.display.flip()
             clock.tick(60)
+
 class PlayerNameInput:
     def __init__(self, screen):
         self.screen = screen
@@ -225,7 +224,6 @@ class PlayerNameInput:
         
         return self.player_name
 
-# Create the Gameover screen, customize screen, information screen
 class InstructionsScreen:
     def __init__(self, screen):
         self.screen = screen
@@ -304,6 +302,7 @@ class InstructionsScreen:
             clock.tick(60)
         
         return True
+        
 class CustomizeScreen:
     def __init__(self, screen):
         self.screen = screen

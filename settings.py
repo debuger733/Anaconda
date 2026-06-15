@@ -4,12 +4,17 @@ import pygame
 # Initial window size and brightness
 SCREEN_WIDTH= 800
 SCREEN_HEIGHT=600
-DEFAULTS = {"brightness": 100}
+DEFAULTS = {"brightness": 100, "snake_color": "green", "background": "grey_white"}
 MIN_BRIGHTNESS=1
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
 
-# Size of each tile
-ts=20
+# Menu screen background color
+mixed_color=pygame.color.Color(100,100,100)
+
+# Logo dimensions
+LOGO_W = 350
+LOGO_H = 100
+LOGO_PATH= "images/logo.png"
 
 # Color codes
 green1= (0, 200, 0)
@@ -21,6 +26,9 @@ grey=  (128, 128, 128)
 black= (0, 0, 0)
 orange = (255, 165, 0)
 yellow = (255, 255, 0)
+orange = (255, 165, 0)
+grey = (128, 128, 128)
+dark_grey = (64, 64, 64)
 
 # Background checkerboard colors
 CHECKERBOARD_TILE_SIZE = 50
@@ -54,14 +62,15 @@ button_height = 50
 button_spacing = 50
 button_color = (200, 200, 200)
 button_text_color = (0, 0, 0)
+button_hover_color = (220, 220, 220)
 
 # Image file paths 
-SPRITE_FILES = "code/images/sprite/sprite"
-IMAGE_PATH = "code/images/sprite/egg.jpg"
+SPRITE_FILES = "images/sprite/sprite"
+IMAGE_PATH = "images/sprite/egg.jpg"
 
 # Food
-FOOD_W = 30
-FOOD_H = 30
+FOOD_W = 50
+FOOD_H = 50
 
 # Clock
 clock = pygame.time.Clock()
