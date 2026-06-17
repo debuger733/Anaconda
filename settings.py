@@ -14,7 +14,7 @@ mixed_color=pygame.color.Color(100,100,100)
 # Logo dimensions
 LOGO_W = 350
 LOGO_H = 100
-LOGO_PATH= "images/logo.png"
+
 
 # Color codes
 green1= (0, 200, 0)
@@ -67,6 +67,7 @@ button_hover_color = (220, 220, 220)
 # Image file paths 
 SPRITE_FILES = "images/sprite/sprite"
 IMAGE_PATH = "images/sprite/egg.jpg"
+LOGO_PATH= "images/logo.png"
 
 # Food
 FOOD_W = 50

@@ -2,7 +2,6 @@
 # Importing and linking other files needed to run the game
 import pygame
 import random
-from imagelist import ImageList
 from settings import*
 
 class Food:

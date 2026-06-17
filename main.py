@@ -140,8 +140,8 @@ def main():
                 menu.hovered_button = i
                 break
 
-        SCREEN.fill((120, 200, 120))
-        
+        SCREEN.fill((33, 89, 77))
+
         if menu.logo_loaded:
             SCREEN.blit(menu.logo, menu.logo_rect)
         

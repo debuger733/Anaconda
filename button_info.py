@@ -10,7 +10,7 @@ class GameOverScreen:
         self.screen = screen
         self.score = score
         self.player_name = player_name
-        self= difficulty
+        self.difficulty = difficulty
         self.font = pygame.font.Font(None, 50)
         self.small_font = pygame.font.Font(None, 30)
         self.button_font = pygame.font.Font(None, 35) 
