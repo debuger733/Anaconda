@@ -34,7 +34,7 @@ class ImageList():
         if index < len(self._images):
             return self._images[index]
         return self._images[0] if self._images else None
-
+    # logo
     def load_logo(self, filename):
         self.logo = pygame.image.load(filename)
         self.logo_width, self.logo_height = self.logo.get_rect().size

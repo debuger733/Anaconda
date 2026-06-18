@@ -8,9 +8,6 @@ DEFAULTS = {"brightness": 100, "snake_color": "green", "background": "grey_white
 MIN_BRIGHTNESS=1
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
 
-# Menu screen background color
-mixed_color=pygame.color.Color(100,100,100)
-
 # Logo dimensions
 LOGO_W = 350
 LOGO_H = 100

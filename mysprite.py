@@ -185,6 +185,7 @@ class GameLoop:
         color1 = bg_config["color1"]
         color2 = bg_config["color2"]
         
+        #Size of the tiles
         tile_size = CHECKERBOARD_TILE_SIZE
         for x in range(0, self.SCREEN.get_width(), tile_size):
             for y in range(0, self.SCREEN.get_height(), tile_size):

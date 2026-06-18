@@ -70,6 +70,7 @@ class Menu:
         if selected_speed is None:
             return
         
+        # Speed of the snake depending on the difficulty
         difficulty_map = {3: "Easy", 5: "Medium", 7: "Hard"}
         difficulty_label = difficulty_map.get(selected_speed, "Medium")
         

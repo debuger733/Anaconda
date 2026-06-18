@@ -92,7 +92,7 @@ class GameOverScreen:
             
             for button_key, button_rect in self.button_rects.items():
                 is_hovered = self.hovered_button == button_key
-                button_color = (100, 255, 100) if is_hovered else (100, 100, 100)
+                button_color = (100, 205, 100) if is_hovered else (100, 100, 100)
                 pygame.draw.rect(self.screen, button_color, button_rect)
                 pygame.draw.rect(self.screen, white, button_rect, 2)
                 
