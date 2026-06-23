@@ -76,7 +76,7 @@ class GameOverScreen:
                     self.hovered_button = button_key
                     break
             
-            self.screen.fill((100, 100, 50))
+            self.screen.fill((33, 89, 77))
             
             gameover_text = self.font.render("GAME OVER", True, red)
             self.screen.blit(gameover_text, (self.screen.get_width() // 2 - gameover_text.get_width() // 2, 50))
@@ -150,7 +150,7 @@ class ExitConfirmDialog:
                     self.hovered_button = button_key
                     break
             
-            self.screen.fill((50, 50, 50))
+            SCREEN.fill((33, 89, 77))
             
             question_text = self.title_font.render("Are you sure you want to exit?", True, white)
             self.screen.blit(question_text, (self.screen.get_width() // 2 - question_text.get_width() // 2, 100))
@@ -203,7 +203,7 @@ class PlayerNameInput:
                     if event.button == 1 and self.button_rect.collidepoint(event.pos):
                         if len(self.player_name) > 0:
                             inputting = False
-                        self.screen.fill((50, 50, 50))
+                        self.screen.fill((33, 89, 77))
 
             title_text = self.title_font.render("Enter Your Name", True, white)
             self.screen.blit(title_text, (self.screen.get_width() // 2 - title_text.get_width() // 2, 50))
@@ -370,7 +370,7 @@ class CustomizeScreen:
             if self.done_rect.collidepoint(mouse_pos):
                 self.hovered_button = "done"
             
-            self.screen.fill((50, 50, 50))
+            self.screen.fill((33, 89, 77))
             
             title = self.title_font.render("Customize Game", True, white)
             self.screen.blit(title, (self.screen.get_width() // 2 - title.get_width() // 2, 20))

@@ -40,3 +40,5 @@ class ImageList():
         self.logo_width, self.logo_height = self.logo.get_rect().size
         self.logo_x = (SCREEN.get_width() - self.logo_width) // 2
         self.logo_y = 0
+    # No changes made 22/06/2026
+    # No changes made 23/06/2026

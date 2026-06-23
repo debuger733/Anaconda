@@ -105,7 +105,7 @@ class DifficultyMenu:
 
     def update_button_positions(self):
         # Position of the buttons
-        BUTTON_X = (self.screen.get_width()//2+15) # positioning of the button easy, medium and hard
+        BUTTON_X = (self.screen.get_width()//4+15) # positioning of the button easy, medium and hard
         button_count =  len(self.difficulties)
         button_total_height = button_count * (60 + 30)
         button_y_offset = (self.screen.get_height() - button_total_height) // 2
