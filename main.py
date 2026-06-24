@@ -20,7 +20,7 @@ class Menu:
         try:
             self.logo = pygame.image.load(LOGO_PATH)
             self.logo = pygame.transform.smoothscale(self.logo, (LOGO_W, LOGO_H))
-            self.logo_rect = self.logo.get_rect(center=(self.screen.get_width() // 2, 50))
+            self.logo_rect = self.logo.get_rect(center=(self.screen.get_width() // 2, 100))
             self.logo_loaded = True
         except Exception as e:
             print(f"Error loading logo: {e}")
@@ -77,10 +77,11 @@ class Menu:
         try:
             food = Food(200, 200, FOOD_W, FOOD_H, IMAGE_PATH, SCREEN)
             test_imagelist = ImageList(SPRITE_FILES, TEST_W, TEST_H)
-            snake_segments = [Mysprite(100, 100, TEST_W, TEST_H, test_imagelist, SCREEN, selected_speed, self.selected_snake_color)]
+            start_x = (SCREEN_WIDTH // 2 // 60) * 60
+            start_y = (SCREEN_HEIGHT // 2 // 60) * 60
+            snake_segments = [Mysprite(start_x, start_y, TEST_W, TEST_H, test_imagelist, SCREEN, selected_speed, self.selected_snake_color)]
             game_loop = GameLoop(snake_segments, food, SCREEN, test_imagelist, selected_speed, self.selected_snake_color, self.selected_background)
             game_loop.run()
-            
             game_over = GameOverScreen(SCREEN, game_loop.score, player_name, difficulty_label)
             result = game_over.show()
             
@@ -150,8 +151,8 @@ def main():
             is_hovered = menu.hovered_button == i
             button_col = button_hover_color if is_hovered else button_color
             
-            pygame.draw.rect(SCREEN, button_col, button_rect)
-            pygame.draw.rect(SCREEN, (0, 0, 0), button_rect, 2)
+            pygame.draw.rect(SCREEN, button_col, button_rect, border_radius= 15)
+            pygame.draw.rect(SCREEN, (0, 0, 0), button_rect, 2, border_radius= 15)
             
             text = menu.font.render(menu.menu_options[i]["label"], True, button_text_color)
             text_rect = text.get_rect(center=button_rect.center)
@@ -164,4 +165,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
+    # No changes made 22/06/2026
+    # No changes made 23/06/2026

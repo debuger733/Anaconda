@@ -8,14 +8,14 @@ class ImageList():
         self._images = []
         count = 0
         # Try to load images with the given filename pattern
-        while exists(filename + str(count) + '.jpg'):
+        while exists(filename + str(count) + '.ong'):
             try:
-                image = pygame.image.load(filename + str(count) + '.jpg')
+                image = pygame.image.load(filename + str(count) + '.png')
                 scaled = pygame.transform.smoothscale(image, [width, height])
                 self._images.append(scaled)
                 count += 1
             except pygame.error as e:
-                print(f"Error loading image {filename}{count}.jpg: {e}")
+                print(f"Error loading image {filename}{count}.png: {e}")
                 break
         
         # If no images found, create a placeholder surface

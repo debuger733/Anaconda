@@ -421,3 +421,5 @@ class CustomizeScreen:
             clock.tick(60)
         
         return self.selected_snake_color, self.selected_background
+
+            # No changes made 25/06/2026

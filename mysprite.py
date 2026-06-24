@@ -60,6 +60,8 @@ class Mysprite(pygame.sprite.Sprite):
     def update(self):
         self.prev_x = self.rect.x
         self.prev_y = self.rect.y 
+        self.rect.x = round(self.rect.x / self.tile_size) * self.tile_size
+        self.rect.y = round(self.rect.y / self.tile_size) * self.tile_size
         dx, dy = self.direction
         self.rect.x += dx * self.tile_size
         self.rect.y += dy * self.tile_size
@@ -141,7 +143,7 @@ class DifficultyMenu:
                     self.hovered_button = i
                     break
             
-            self.screen.fill((50, 50, 50))
+            self.screen.fill((33, 89, 77))
             
             title = self.title_font.render("Select Difficulty", True, white)
             title_rect = title.get_rect(center=(self.screen.get_width() // 2, 50))
@@ -236,8 +238,8 @@ class GameLoop:
                 print(f"Food eaten! Score: {self.score}")
                 self.add_segment()
                 self.add_segment()
-                new_x = (random.randint(0, (SCREEN_WIDTH // TEST_W) - 1)) * TEST_W
-                new_y = (random.randint(0, (SCREEN_HEIGHT // TEST_H) - 1)) * TEST_H
+                new_x = (random.randint(0, (SCREEN_WIDTH // CHECKERBOARD_TILE_SIZE) - 1)) * CHECKERBOARD_TILE_SIZE
+                new_y = (random.randint(0, (SCREEN_HEIGHT // CHECKERBOARD_TILE_SIZE) - 1)) * CHECKERBOARD_TILE_SIZE
                 self.food.set_pos(new_x, new_y)
 
             if self.snake_collision():

@@ -28,7 +28,7 @@ grey = (128, 128, 128)
 dark_grey = (64, 64, 64)
 
 # Background checkerboard colors
-CHECKERBOARD_TILE_SIZE = 50
+CHECKERBOARD_TILE_SIZE = 60
 BACKGROUND_MODES = {
     "grey_white": {"color1": grey, "color2": white},
     "green_dark": {"color1": green1, "color2": green2},
@@ -67,8 +67,8 @@ IMAGE_PATH = "images/sprite/egg.jpg"
 LOGO_PATH= "images/logo.png"
 
 # Food
-FOOD_W = 50
-FOOD_H = 50
+FOOD_W = 60
+FOOD_H = 60
 
 # Clock
 clock = pygame.time.Clock()
