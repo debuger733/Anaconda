@@ -107,7 +107,7 @@ class DifficultyMenu:
 
     def update_button_positions(self):
         # Position of the buttons
-        BUTTON_X = (self.screen.get_width()//4+15) # positioning of the button easy, medium and hard
+        BUTTON_X = (self.screen.get_width() - button_width) // 2 # positioning of the button easy, medium and hard
         button_count =  len(self.difficulties)
         button_total_height = button_count * (60 + 30)
         button_y_offset = (self.screen.get_height() - button_total_height) // 2
@@ -137,7 +137,6 @@ class DifficultyMenu:
                                 self.selected_difficulty = self.difficulties[i]["speed"]
                                 selecting = False
                                 break
-            
             for i, button_rect in enumerate(self.button_rects):
                 if button_rect.collidepoint(mouse_pos):
                     self.hovered_button = i
@@ -151,8 +150,8 @@ class DifficultyMenu:
 
             for i, button_rect in enumerate(self.button_rects):
                 button_color = (120, 120, 120) if i == self.hovered_button else (100, 100, 100)
-                pygame.draw.rect(self.screen, button_color, button_rect)
-                pygame.draw.rect(self.screen, white, button_rect, 3)
+                pygame.draw.rect(self.screen, button_color, button_rect, border_radius= 15)
+                pygame.draw.rect(self.screen, white, button_rect, 3, border_radius= 15)
                 
                 text = self.font.render(self.difficulties[i]["label"], True, white)
                 text_rect = text.get_rect(center=button_rect.center)

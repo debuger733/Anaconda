@@ -158,8 +158,8 @@ class ExitConfirmDialog:
             for button_key, button_rect in self.button_rects.items():
                 is_hovered = self.hovered_button == button_key
                 button_color = (100, 255, 100) if is_hovered else (100, 100, 100)
-                pygame.draw.rect(self.screen, button_color, button_rect)
-                pygame.draw.rect(self.screen, white, button_rect, 2)
+                pygame.draw.rect(self.screen, button_color, button_rect, border_radius= 15)
+                pygame.draw.rect(self.screen, white, button_rect, 2, border_radius= 15)
                 
                 button_label = "Yes" if button_key == "yes" else "No"
                 text = self.font.render(button_label, True, black)
@@ -203,7 +203,7 @@ class PlayerNameInput:
                     if event.button == 1 and self.button_rect.collidepoint(event.pos):
                         if len(self.player_name) > 0:
                             inputting = False
-                        self.screen.fill((33, 89, 77))
+                self.screen.fill((33, 89, 77))
 
             title_text = self.title_font.render("Enter Your Name", True, white)
             self.screen.blit(title_text, (self.screen.get_width() // 2 - title_text.get_width() // 2, 50))

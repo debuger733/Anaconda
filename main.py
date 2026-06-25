@@ -16,11 +16,10 @@ class Menu:
         self.logo_loaded = False
         self.logo = None
         self.logo_rect = None
-        
         try:
             self.logo = pygame.image.load(LOGO_PATH)
             self.logo = pygame.transform.smoothscale(self.logo, (LOGO_W, LOGO_H))
-            self.logo_rect = self.logo.get_rect(center=(self.screen.get_width() // 2, 100))
+            self.logo_rect = self.logo.get_rect(center=(self.screen.get_width() // 2, 110))
             self.logo_loaded = True
         except Exception as e:
             print(f"Error loading logo: {e}")
@@ -57,10 +56,11 @@ class Menu:
     def show_menu(self):
         self.update_button_positions()
 
-    def play(self):
-        name_input = PlayerNameInput(SCREEN)
-        player_name = name_input.show()
-        
+    def play(self, player_name= None):
+        if player_name is None:
+            name_input = PlayerNameInput(SCREEN)
+            player_name = name_input.show()
+
         if player_name is None:
             return
         
@@ -86,7 +86,7 @@ class Menu:
             result = game_over.show()
             
             if result == "try_again":
-                self.play()
+                self.play(player_name)
             
         except Exception as e:
             print(f"Error starting game: {e}")
