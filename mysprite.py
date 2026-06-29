@@ -5,6 +5,7 @@ import random
 from settings import*
 
 class Food:
+    """This loads the egg image which the snake consumes"""
     def __init__(self, x, y, width, height, image_path, SCREEN):
         self.x = x
         self.y = y
@@ -36,6 +37,7 @@ class Food:
         return self.rect
 
 class Mysprite(pygame.sprite.Sprite):
+    """This controls the snake initially"""
     def __init__(self, x, y, width, height, sprite_imagelist, SCREEN, speed=5, snake_color="green"):
         super().__init__()
         self.image = sprite_imagelist.get_image(0)
@@ -88,12 +90,13 @@ class Mysprite(pygame.sprite.Sprite):
         return self.rect
 
 class DifficultyMenu:
-    # Menu to select the difficulty of the game
+    """The game difficulty is controlled by this"""
     def __init__(self, screen):
         self.screen = screen
         self.font = pygame.font.Font(None, 35)
         self.title_font = pygame.font.Font(None, 50)
         
+        # Speed of each mode
         self.difficulties = [
             {"label": "Easy", "speed": 3},
             {"label": "Medium", "speed": 5},
@@ -141,7 +144,7 @@ class DifficultyMenu:
                 if button_rect.collidepoint(mouse_pos):
                     self.hovered_button = i
                     break
-            
+            # The background color of the screen
             self.screen.fill((33, 89, 77))
             
             title = self.title_font.render("Select Difficulty", True, white)
@@ -162,6 +165,7 @@ class DifficultyMenu:
         return self.selected_difficulty
         
 class GameLoop:
+    """The gameloop is responsible runs the game with default settings"""
     def __init__(self, snake_segments, food, SCREEN, sprite_imagelist, difficulty_speed, snake_color="green", background_mode="grey_white"):
         self.snake_segments = snake_segments
         self.food = food
@@ -181,12 +185,13 @@ class GameLoop:
             segment.speed = difficulty_speed
             segment.snake_color = SNAKE_COLORS.get(snake_color, green1)
 
+    # Defualt checkerboard colors
     def draw_checkerboard(self):
         bg_config = BACKGROUND_MODES.get(self.background_mode, BACKGROUND_MODES["grey_white"])
         color1 = bg_config["color1"]
         color2 = bg_config["color2"]
         
-        #Size of the tiles
+        # Size of the tiles
         tile_size = CHECKERBOARD_TILE_SIZE
         for x in range(0, self.SCREEN.get_width(), tile_size):
             for y in range(0, self.SCREEN.get_height(), tile_size):
@@ -200,6 +205,7 @@ class GameLoop:
         game_running = True
         movement_counter = 0
         
+        # Controls the snake movements using arrow keys
         while game_running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -240,11 +246,14 @@ class GameLoop:
                 new_x = (random.randint(0, (SCREEN_WIDTH // CHECKERBOARD_TILE_SIZE) - 1)) * CHECKERBOARD_TILE_SIZE
                 new_y = (random.randint(0, (SCREEN_HEIGHT // CHECKERBOARD_TILE_SIZE) - 1)) * CHECKERBOARD_TILE_SIZE
                 self.food.set_pos(new_x, new_y)
-
+                
+                # Printing the type of collision that occured
+            # Collision type: Snake hit itself
             if self.snake_collision():
                 print(f"Game Over! Snake hit itself. Score: {self.score}")
                 game_running = False
-
+            
+            # Collision type: Snake hit the boundaries
             if self.check_bounds():
                 print(f"Game Over! Out of bounds. Score: {self.score}")
                 game_running = False
@@ -257,6 +266,7 @@ class GameLoop:
                 colored_image.fill(segment.snake_color)
                 self.SCREEN.blit(colored_image, (segment.rect.x, segment.rect.y))
             
+            # Presenting the score and size of the snake
             score_text = f"Score: {self.score} | Size: {len(self.snake_segments)}"
             score_surface = self.font.render(score_text, True, black)
             
@@ -270,6 +280,8 @@ class GameLoop:
             pygame.display.flip()
             self.clock.tick(60)
 
+    # Growing the snake with new segments
+    # New segments should have the same speed and color as the snake
     def add_segment(self):
         if len(self.snake_segments) > 0:
             last_segment = self.snake_segments[-1]
@@ -287,13 +299,13 @@ class GameLoop:
             self.snake_segments.append(new_segment)
             print(f"Snake grew! New length: {len(self.snake_segments)}")
 
+    # Collisions of the snake with the food image
     def food_collision(self):
-
         head_rect = self.snake_segments[0].get_rect()
-        food_rect = self.food.get_rect()
-        
+        food_rect = self.food.get_rect()   
         return head_rect.colliderect(food_rect)
 
+    # Checking for collisions of the snake
     def snake_collision(self):
         head_x = self.snake_segments[0].rect.x
         head_y = self.snake_segments[0].rect.y
@@ -311,6 +323,7 @@ class GameLoop:
         
         return False
 
+    # Checking for boundaries
     def check_bounds(self):
         head = self.snake_segments[0]
         if (head.get_x() < 0 or 

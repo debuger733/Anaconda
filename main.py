@@ -10,12 +10,14 @@ pygame.init()
 # Creating the menu screen
 pygame.init()
 class Menu:
+    """This includes the buttons and the logo"""
     def __init__(self, screen):
         self.screen = screen
         self.font = pygame.font.Font(None, 25)
         self.logo_loaded = False
         self.logo = None
         self.logo_rect = None
+        # Loading the logo
         try:
             self.logo = pygame.image.load(LOGO_PATH)
             self.logo = pygame.transform.smoothscale(self.logo, (LOGO_W, LOGO_H))
@@ -25,6 +27,7 @@ class Menu:
             print(f"Error loading logo: {e}")
             self.logo_loaded = False
         
+        # Buttons
         self.menu_options = [
             {"label": "Play", "command": self.play},
             {"label": "Customize", "command": self.customize},
@@ -37,6 +40,7 @@ class Menu:
         self.selected_snake_color = "green"
         self.selected_background = "grey_white"
 
+    # Updating the position of the buttons
     def update_button_positions(self):
         self.button_rects = []
         BUTTON_X = (self.screen.get_width() - button_width) // 2
@@ -56,6 +60,7 @@ class Menu:
     def show_menu(self):
         self.update_button_positions()
 
+    # Play button
     def play(self, player_name= None):
         if player_name is None:
             name_input = PlayerNameInput(SCREEN)
@@ -87,10 +92,12 @@ class Menu:
             
             if result == "try_again":
                 self.play(player_name)
-            
+
+        # Printing an error message if the game cannot be loaded
         except Exception as e:
             print(f"Error starting game: {e}")
 
+    # Customize button
     def customize(self):
         customize_screen = CustomizeScreen(SCREEN)
         snake_color, background = customize_screen.show()
@@ -100,25 +107,26 @@ class Menu:
             self.selected_background = background
             print(f"Settings updated - Snake: {snake_color}, Background: {background}")
 
+    # Information button
     def info(self):
         instructions = InstructionsScreen(SCREEN)
         instructions.show()
 
+    # Exit button
     def exit_game(self):
         confirm_dialog = ExitConfirmDialog(SCREEN)
         should_exit = confirm_dialog.show()
         if should_exit:
             return "exit"
-
+# Main menu
 def main():
     pygame.init()
-    pygame.display.set_caption("Snake Core")
-    
+    pygame.display.set_caption("Snake Core")  
     menu = Menu(SCREEN)
     menu.show_menu()
-
     game_running = True
 
+    # This open the main mene when the file is clicked run
     while game_running:
         mouse_pos = pygame.mouse.get_pos()
         menu.hovered_button = None
@@ -142,6 +150,7 @@ def main():
                 menu.hovered_button = i
                 break
 
+        # The background color of the main menu window
         SCREEN.fill((33, 89, 77))
 
         if menu.logo_loaded:
@@ -167,3 +176,4 @@ if __name__ == "__main__":
     main()
     # No changes made 22/06/2026
     # No changes made 23/06/2026
+    # No changes made 29/06/2026

@@ -6,6 +6,7 @@ pygame.init()
 
 # Allowing the user to enter their name 
 class GameOverScreen:
+    """This prints the gameover screen"""
     def __init__(self, screen, score, player_name, difficulty):
         self.screen = screen
         self.score = score
@@ -19,6 +20,7 @@ class GameOverScreen:
         self.update_button_positions()
         self.save_score()
     
+    # Positioning of the buttons
     def update_button_positions(self):
         self.button_rects = {}
         button_y = self.screen.get_height() // 2 + 150
@@ -26,12 +28,15 @@ class GameOverScreen:
         button_height = 50
         button_spacing = 30
         
+        # Try again button
         try_again_x = self.screen.get_width() // 2 - button_width - button_spacing // 2
         self.button_rects["try_again"] = pygame.Rect(try_again_x, button_y, button_width, button_height)
         
+        # Menu button
         menu_x = self.screen.get_width() // 2 + button_spacing // 2
         self.button_rects["menu"] = pygame.Rect(menu_x, button_y, button_width, button_height)
     
+    # Saving history through json
     def save_score(self):
         history_file = "game_history.json"
         
@@ -41,6 +46,7 @@ class GameOverScreen:
         else:
             history = []
         
+        # Gathering information
         entry = {
             "player_name": self.player_name,
             "score": self.score,
@@ -51,6 +57,7 @@ class GameOverScreen:
         with open(history_file, 'w') as f:
             json.dump(history, f, indent=2)
         
+        # Printing the history
         print(f"Score saved: {self.player_name} - Score: {self.score} - Difficulty: {self.difficulty}")
     
     def show(self):
