@@ -82,9 +82,10 @@ class GameOverScreen:
                 if button_rect.collidepoint(mouse_pos):
                     self.hovered_button = button_key
                     break
-            
+            # The background color of the gameover screen
             self.screen.fill((33, 89, 77))
             
+            # Positioning history
             gameover_text = self.font.render("GAME OVER", True, red)
             self.screen.blit(gameover_text, (self.screen.get_width() // 2 - gameover_text.get_width() // 2, 50))
             
@@ -111,6 +112,8 @@ class GameOverScreen:
             clock.tick(60)
 
 class ExitConfirmDialog:
+    """This asks for exit confirmation"""
+    """It prevents from unnecessarily exiting the game"""
     def __init__(self, screen):
         self.screen = screen
         self.font = pygame.font.Font(None, 35)
@@ -122,7 +125,6 @@ class ExitConfirmDialog:
     
     def update_button_positions(self):
         self.button_rects = {}
-        
         button_y = self.screen.get_height() // 2 + 80
         button_width = 120
         button_height = 50
@@ -156,7 +158,7 @@ class ExitConfirmDialog:
                 if button_rect.collidepoint(mouse_pos):
                     self.hovered_button = button_key
                     break
-            
+            # The background color of the exit confirmation screen
             SCREEN.fill((33, 89, 77))
             
             question_text = self.title_font.render("Are you sure you want to exit?", True, white)
@@ -176,6 +178,7 @@ class ExitConfirmDialog:
             clock.tick(60)
 
 class PlayerNameInput:
+    """This allows the user to enter their username"""
     def __init__(self, screen):
         self.screen = screen
         self.font = pygame.font.Font(None, 35)
@@ -210,6 +213,7 @@ class PlayerNameInput:
                     if event.button == 1 and self.button_rect.collidepoint(event.pos):
                         if len(self.player_name) > 0:
                             inputting = False
+                # The background color of the player name input screen
                 self.screen.fill((33, 89, 77))
 
             title_text = self.title_font.render("Enter Your Name", True, white)
@@ -232,6 +236,7 @@ class PlayerNameInput:
         return self.player_name
 
 class InstructionsScreen:
+    """This section opens the information screen"""
     def __init__(self, screen):
         self.screen = screen
         self.font = pygame.font.Font(None, 24)
@@ -285,7 +290,8 @@ class InstructionsScreen:
                 elif event.type == pygame.MOUSEWHEEL:
                     scroll_offset -= event.y * 10
                     scroll_offset = max(0, min(scroll_offset, max_scroll))
-            
+
+            # Background color of the information screen
             self.screen.fill((50, 50, 50))
             
             y_pos = 30 - scroll_offset
@@ -311,6 +317,7 @@ class InstructionsScreen:
         return True
         
 class CustomizeScreen:
+    """This section allows the user to customize the game"""
     def __init__(self, screen):
         self.screen = screen
         self.font = pygame.font.Font(None, 30)
@@ -377,6 +384,7 @@ class CustomizeScreen:
             if self.done_rect.collidepoint(mouse_pos):
                 self.hovered_button = "done"
             
+            # Background color of the customization screen
             self.screen.fill((33, 89, 77))
             
             title = self.title_font.render("Customize Game", True, white)

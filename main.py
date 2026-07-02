@@ -4,13 +4,14 @@ import pygame
 from imagelist import ImageList
 from mysprite import Food, Mysprite, DifficultyMenu, GameLoop
 from button_info import PlayerNameInput, GameOverScreen, InstructionsScreen, CustomizeScreen, ExitConfirmDialog
-from settings import*
+from settings import *
 pygame.init()
 
 # Creating the menu screen
 pygame.init()
 class Menu:
-    """This includes the buttons and the logo"""
+    """This includes the buttons and the logo."""
+
     def __init__(self, screen):
         self.screen = screen
         self.font = pygame.font.Font(None, 25)
@@ -126,7 +127,7 @@ def main():
     menu.show_menu()
     game_running = True
 
-    # This open the main mene when the file is clicked run
+    # This open the main menu when the file is clicked run
     while game_running:
         mouse_pos = pygame.mouse.get_pos()
         menu.hovered_button = None
@@ -177,3 +178,4 @@ if __name__ == "__main__":
     # No changes made 22/06/2026
     # No changes made 23/06/2026
     # No changes made 29/06/2026
+    # No changes made 02/07/2026

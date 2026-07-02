@@ -90,7 +90,7 @@ class Mysprite(pygame.sprite.Sprite):
         return self.rect
 
 class DifficultyMenu:
-    """The game difficulty is controlled by this"""
+    """The game difficulty is controlled from this section"""
     def __init__(self, screen):
         self.screen = screen
         self.font = pygame.font.Font(None, 35)
@@ -165,7 +165,7 @@ class DifficultyMenu:
         return self.selected_difficulty
         
 class GameLoop:
-    """The gameloop is responsible runs the game with default settings"""
+    """The gameloop is responsible to run the game with default settings"""
     def __init__(self, snake_segments, food, SCREEN, sprite_imagelist, difficulty_speed, snake_color="green", background_mode="grey_white"):
         self.snake_segments = snake_segments
         self.food = food
