@@ -147,6 +147,7 @@ class DifficultyMenu:
             # The background color of the screen
             self.screen.fill((33, 89, 77))
             
+            # Rendering the difficulty page titlen and centering it
             title = self.title_font.render("Select Difficulty", True, white)
             title_rect = title.get_rect(center=(self.screen.get_width() // 2, 50))
             self.screen.blit(title, title_rect)
@@ -226,6 +227,7 @@ class GameLoop:
                 
                 self.snake_segments[0].update()
                 
+                # Making new segments to follow the snake
                 self.position_history.insert(0, (self.snake_segments[0].rect.x, self.snake_segments[0].rect.y))
                 
                 for i in range(1, len(self.snake_segments)):
@@ -332,3 +334,4 @@ class GameLoop:
             head.get_y() + head.get_h() > SCREEN_HEIGHT):
             return True
         return False
+    # No changes made 21/07/2026

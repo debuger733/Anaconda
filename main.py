@@ -3,14 +3,18 @@
 import pygame
 from imagelist import ImageList
 from mysprite import Food, Mysprite, DifficultyMenu, GameLoop
-from button_info import PlayerNameInput, GameOverScreen, InstructionsScreen, CustomizeScreen, ExitConfirmDialog
+from button_info import (
+    PlayerNameInput,
+    GameOverScreen,
+    InstructionsScreen,
+    CustomizeScreen,
+    ExitConfirmDialog,
+)
 from settings import *
-pygame.init()
 
-# Creating the menu screen
-pygame.init()
 class Menu:
-    """This includes the buttons and the logo."""
+    """This class creates the Main menu"""
+
 
     def __init__(self, screen):
         self.screen = screen
@@ -18,69 +22,81 @@ class Menu:
         self.logo_loaded = False
         self.logo = None
         self.logo_rect = None
+        
         # Loading the logo
         try:
             self.logo = pygame.image.load(LOGO_PATH)
             self.logo = pygame.transform.smoothscale(self.logo, (LOGO_W, LOGO_H))
+            # Position the logo at the top center of the screen
             self.logo_rect = self.logo.get_rect(center=(self.screen.get_width() // 2, 110))
             self.logo_loaded = True
-        except Exception as e:
-            print(f"Error loading logo: {e}")
+        except Exception as exc:
+            print(f"Error loading logo: {exc}")
             self.logo_loaded = False
-        
-        # Buttons
+
+        # Buttons of the Main menu
         self.menu_options = [
             {"label": "Play", "command": self.play},
             {"label": "Customize", "command": self.customize},
             {"label": "Info", "command": self.info},
-            {"label": "Exit", "command": self.exit_game}
+            {"label": "Exit", "command": self.exit_game},
         ]
-        
+
+        # Initializing button tracking variables
         self.button_rects = []
         self.hovered_button = None
+
+        # Initializing snake color and background
         self.selected_snake_color = "green"
         self.selected_background = "grey_white"
 
-    # Updating the position of the buttons
     def update_button_positions(self):
+        """Updating the position of the buttons"""
+
+        # Calculate and updating the positions of the buttons
         self.button_rects = []
-        BUTTON_X = (self.screen.get_width() - button_width) // 2
+        button_x = (self.screen.get_width() - button_width) // 2
         button_count = len(self.menu_options)
         button_total_height = button_count * (button_height + button_spacing)
         button_y_offset = (self.screen.get_height() - button_total_height) // 2 + 100
 
+        # Creating the rectangular shape for the buttons
         for i in range(button_count):
             button_rect = pygame.Rect(
-                BUTTON_X, 
-                button_y_offset + i * (button_height + button_spacing), 
-                button_width, 
-                button_height
+                button_x,
+                button_y_offset + i * (button_height + button_spacing),
+                button_width,
+                button_height,
             )
             self.button_rects.append(button_rect)
 
     def show_menu(self):
         self.update_button_positions()
 
-    # Play button
-    def play(self, player_name= None):
+    def play(self, player_name=None):
+        """This section controls the play button"""
+
+
         if player_name is None:
             name_input = PlayerNameInput(SCREEN)
             player_name = name_input.show()
 
         if player_name is None:
             return
-        
+
+        # Difficulty selection
         difficulty_menu = DifficultyMenu(SCREEN)
         selected_speed = difficulty_menu.show()
-        
+
         if selected_speed is None:
             return
-        
-        # Speed of the snake depending on the difficulty
+
+        # Speed label depending on difficulty
         difficulty_map = {3: "Easy", 5: "Medium", 7: "Hard"}
         difficulty_label = difficulty_map.get(selected_speed, "Medium")
-        
+
         try:
+            # Initializing the food image and positioning
             food = Food(200, 200, FOOD_W, FOOD_H, IMAGE_PATH, SCREEN)
             test_imagelist = ImageList(SPRITE_FILES, TEST_W, TEST_H)
             start_x = (SCREEN_WIDTH // 2 // 60) * 60
@@ -90,49 +106,63 @@ class Menu:
             game_loop.run()
             game_over = GameOverScreen(SCREEN, game_loop.score, player_name, difficulty_label)
             result = game_over.show()
-            
+
             if result == "try_again":
                 self.play(player_name)
 
-        # Printing an error message if the game cannot be loaded
-        except Exception as e:
-            print(f"Error starting game: {e}")
+        except Exception as exc:
+            print(f"Error starting game: {exc}")
 
-    # Customize button
     def customize(self):
+        """This sections controls the Customization button"""
+
+
         customize_screen = CustomizeScreen(SCREEN)
         snake_color, background = customize_screen.show()
-        
+
         if snake_color and background:
             self.selected_snake_color = snake_color
             self.selected_background = background
             print(f"Settings updated - Snake: {snake_color}, Background: {background}")
 
-    # Information button
     def info(self):
+        """This section controls the Information button"""
+
+
         instructions = InstructionsScreen(SCREEN)
         instructions.show()
 
-    # Exit button
     def exit_game(self):
+        """This section controls the Exit button"""
         confirm_dialog = ExitConfirmDialog(SCREEN)
         should_exit = confirm_dialog.show()
         if should_exit:
             return "exit"
-# Main menu
+
 def main():
+    """Main function"""
+
+    # Initialize pygame
     pygame.init()
-    pygame.display.set_caption("Snake Core")  
+    pygame.display.set_caption("Snake Core")
+
+    # Initialize the main menu
     menu = Menu(SCREEN)
     menu.show_menu()
+
     game_running = True
 
-    # This open the main menu when the file is clicked run
+    # Main event loop
+    # This runs the game untill the user exists
     while game_running:
+
+        # Getting current mouse position to hover the buttons
         mouse_pos = pygame.mouse.get_pos()
         menu.hovered_button = None
-        
+
+        # Processing all pygame events
         for event in pygame.event.get():
+            # Closing the game if user clicks close
             if event.type == pygame.QUIT:
                 game_running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -144,6 +174,7 @@ def main():
                                 game_running = False
                             break
             elif event.type == pygame.VIDEORESIZE:
+                # Repositioning if the window was resized
                 menu.update_button_positions()
 
         for i, button_rect in enumerate(menu.button_rects):
@@ -156,22 +187,26 @@ def main():
 
         if menu.logo_loaded:
             SCREEN.blit(menu.logo, menu.logo_rect)
-        
+
+        # Drawing all Main menu buttons
         for i, button_rect in enumerate(menu.button_rects):
             is_hovered = menu.hovered_button == i
             button_col = button_hover_color if is_hovered else button_color
-            
-            pygame.draw.rect(SCREEN, button_col, button_rect, border_radius= 15)
-            pygame.draw.rect(SCREEN, (0, 0, 0), button_rect, 2, border_radius= 15)
-            
+
+            pygame.draw.rect(SCREEN, button_col, button_rect, border_radius=15)
+            pygame.draw.rect(SCREEN, (0, 0, 0), button_rect, 2, border_radius=15)
+
             text = menu.font.render(menu.menu_options[i]["label"], True, button_text_color)
             text_rect = text.get_rect(center=button_rect.center)
+            # Drawing the text on the screen
             SCREEN.blit(text, text_rect)
-
+            
+        # Updating the display with all drawn elements
         pygame.display.flip()
         clock.tick(60)
 
     pygame.quit()
+
 
 if __name__ == "__main__":
     main()
