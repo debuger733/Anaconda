@@ -200,7 +200,7 @@ def main():
             text_rect = text.get_rect(center=button_rect.center)
             # Drawing the text on the screen
             SCREEN.blit(text, text_rect)
-            
+
         # Updating the display with all drawn elements
         pygame.display.flip()
         clock.tick(60)

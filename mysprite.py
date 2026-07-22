@@ -335,3 +335,4 @@ class GameLoop:
             return True
         return False
     # No changes made 21/07/2026
+    # No changes made 21/07/2026
