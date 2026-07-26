@@ -1,3 +1,5 @@
+"""This is the button_info file"""
+
 import pygame
 from settings import*
 import json
@@ -6,8 +8,7 @@ pygame.init()
 
 # Allowing the user to enter their name 
 class GameOverScreen:
-
-    """This prints the gameover screen"""
+    """This prints the gameover screen."""
 
     def __init__(self, screen, score, player_name, difficulty):
         # Initialize the Game Over screen
@@ -70,9 +71,7 @@ class GameOverScreen:
         print(f"Score saved: {self.player_name} - Score: {self.score} - Difficulty: {self.difficulty}")
     
     def show(self):
-        """Displaying the game over screen"""
-
-
+        """Displaying the game over screen."""
         waiting = True
         clock = pygame.time.Clock()
         
@@ -130,8 +129,10 @@ class GameOverScreen:
             clock.tick(60)
 
 class ExitConfirmDialog:
-    """This asks for exit confirmation"""
-    """It prevents from unnecessarily exiting the game"""
+    """
+    This asks for exit confirmation
+    It prevents from unnecessarily exiting the game
+    """
 
 
     def __init__(self, screen):
@@ -166,12 +167,11 @@ class ExitConfirmDialog:
         self.button_rects["no"] = pygame.Rect(no_x, button_y, button_width, button_height)
     
     def show(self):
-        """Displaying the exit confirmation screen"""
-
-
+        """Displaying the exit confirmation screen."""
         waiting = True
         clock = pygame.time.Clock()
-        
+
+        # Main loop for the confirmation dialog
         while waiting:
             mouse_pos = pygame.mouse.get_pos()
             self.hovered_button = None
@@ -216,8 +216,9 @@ class ExitConfirmDialog:
             pygame.display.flip()
             clock.tick(60)
 
+
 class PlayerNameInput:
-    """This allows the user to enter their username"""
+    """This allows the user to enter their username."""
 
 
     def __init__(self, screen):
@@ -238,9 +239,7 @@ class PlayerNameInput:
         self.hovered = False
     
     def show(self):
-        """Displaying the Player Name input screen"""
-
-
+        """Displaying the Player Name input screen."""
         inputting= True
 
         while inputting:
@@ -296,10 +295,11 @@ class PlayerNameInput:
         return self.player_name
 
 class InstructionsScreen:
-    """This section opens the information screen"""
+    """This section opens the information screen."""
 
 
     def __init__(self, screen):
+        # Initializing the fonts
         self.screen = screen
         self.font = pygame.font.Font(None, 24)
         self.title_font = pygame.font.Font(None, 40)
@@ -335,36 +335,49 @@ class InstructionsScreen:
         ]
     
     def show(self):
+        """Displaying the instructions screen."""
         showing = True
         clock = pygame.time.Clock()
+        # Tracking scrolling position
         scroll_offset = 0
+        # Calculating maximum scroll distace
         max_scroll = max(0, len(self.instructions) * 25 - self.screen.get_height() + 100)
-        
+
+        # Main loop for the window display
         while showing:
             for event in pygame.event.get():
+                # Handling window close
                 if event.type == pygame.QUIT:
                     return False
+                # Allowing Space bar to stop displaying the instructions screen
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         showing = False
+                # Allowing mouse clicks to stop displaying the instructions screen
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     showing = False
+                # Allowing mouse scroll wheel to stop displaying the instructions screen
                 elif event.type == pygame.MOUSEWHEEL:
                     scroll_offset -= event.y * 10
                     scroll_offset = max(0, min(scroll_offset, max_scroll))
 
             # Background color of the information screen
             self.screen.fill((50, 50, 50))
-            
+
+            # Rendering each line of the instuctions in the right position
             y_pos = 30 - scroll_offset
             for line in self.instructions:
+                # Renderinf the title in yellow
                 if line == "HOW TO PLAY":
                     text = self.title_font.render(line, True, yellow)
+                # Rendersing section heading in white
                 elif line.isupper() and line:
                     text = self.font.render(line, True, white)
+                # Rendering other texts in light grey
                 else:
                     text = self.small_font.render(line, True, (200, 200, 200))
-                
+
+                # Only draw text if it's visible on screen
                 if y_pos > -20 and y_pos < self.screen.get_height():
                     self.screen.blit(text, (40, y_pos))
                 y_pos += 25
@@ -379,7 +392,7 @@ class InstructionsScreen:
         return True
         
 class CustomizeScreen:
-    """This section allows the user to customize the game"""
+    """This section allows the user to customize the game."""
 
 
     def __init__(self, screen):
@@ -405,9 +418,7 @@ class CustomizeScreen:
         self.update_button_positions()
     
     def update_button_positions(self):
-        """Calculate and update positioning of the buttons"""
-
-
+        """Calculate and update positioning of the buttons."""
         self.button_rects = {}
         
         # Postioning the snake color buttons
@@ -426,9 +437,7 @@ class CustomizeScreen:
         self.done_rect = pygame.Rect(self.screen.get_width() // 2 - 75, 400, 150, 50)
     
     def show(self):
-        """Displaying the Customize screen"""
-
-
+        """Displaying the Customize screen."""
         customizing = True
         clock = pygame.time.Clock()
         
@@ -444,13 +453,16 @@ class CustomizeScreen:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         return None, None
-                    # Check if any buttons were clicked
+                # Check if any buttons were clicked
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
+                        # Check if any button was clicked
                         for button_key, button_rect in self.button_rects.items():
                             if button_rect.collidepoint(event.pos):
+                                # Update snake color
                                 if button_key.startswith("snake_"):
                                     self.selected_snake_color = button_key.split("_")[1]
+                                # Update background color
                                 elif button_key.startswith("bg_"):
                                     self.selected_background = button_key.split("_", 1)[1]
 
@@ -470,10 +482,11 @@ class CustomizeScreen:
             # Background color of the customization screen
             self.screen.fill((33, 89, 77))
             
-            # Render customization screen title
+            # Render and display title
             title = self.title_font.render("Customize Game", True, white)
             self.screen.blit(title, (self.screen.get_width() // 2 - title.get_width() // 2, 20))
-            
+
+            # Render the "Snake color:" label
             color_label = self.font.render("Snake Color:", True, white)
             self.screen.blit(color_label, (20, 70))
             
@@ -481,10 +494,14 @@ class CustomizeScreen:
             for color in self.snake_colors:
                 button_key = f"snake_{color}"
                 button_rect = self.button_rects[button_key]
+                # Check if the button is selected or hovered
                 is_selected = color == self.selected_snake_color
                 is_hovered = self.hovered_button == button_key
-                
+
+                # Use green if selected
+                # Use light grey if hovered
                 bg_color = (100, 255, 100) if is_selected else ((120, 120, 120) if is_hovered else (100, 100, 100))
+                # Drawing the rectangle for the button
                 pygame.draw.rect(self.screen, bg_color, button_rect)
                 pygame.draw.rect(self.screen, white, button_rect, 2)
                 
@@ -493,7 +510,8 @@ class CustomizeScreen:
             
             bg_label = self.font.render("Background:", True, white)
             self.screen.blit(bg_label, (20, 220))
-            
+
+            # Drawing all Background theme buttons
             for i, bg in enumerate(self.backgrounds):
                 button_key = f"bg_{bg}"
                 button_rect = self.button_rects[button_key]
@@ -508,11 +526,12 @@ class CustomizeScreen:
                 
                 text = self.font.render(self.background_labels[i], True, black)
                 self.screen.blit(text, (button_rect.x + 15, button_rect.y + 12))
-            
+            # Drawing the done button with the hover effect
             done_color = (100, 255, 100) if self.hovered_button == "done" else (100, 100, 100)
             pygame.draw.rect(self.screen, done_color, self.done_rect)
             pygame.draw.rect(self.screen, white, self.done_rect, 2)
-            
+
+            # Render and display the Done button labe
             done_text = self.font.render("Done", True, black)
             self.screen.blit(done_text, (self.done_rect.x + 50, self.done_rect.y + 12))
             
@@ -528,3 +547,4 @@ class CustomizeScreen:
             # No changes made 25/06/2026
             # No changes made 23/07/2026
             # No changes made 23/07/2026
+            

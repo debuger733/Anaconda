@@ -12,7 +12,6 @@ SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE
 LOGO_W = 380
 LOGO_H = 200
 
-
 # Color codes
 green1= (0, 200, 0)
 green2= (0, 150, 0)
@@ -80,3 +79,4 @@ clock = pygame.time.Clock()
     # No changes made 21/07/2026
     # No changes made 23/07/2026
     # No changes made 23/07/2026
+    

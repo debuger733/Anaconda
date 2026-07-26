@@ -1,33 +1,43 @@
-# myspritepy
+"""This is the mysprite file"""
+
+
 # Importing and linking other files needed to run the game
 import pygame
 import random
-from settings import*
+from settings import *
 
 class Food:
-    """This loads the egg image which the snake consumes"""
+    """This loads the egg image which the snake consumes."""
+
+
     def __init__(self, x, y, width, height, image_path, SCREEN):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.SCREEN = SCREEN
+
+        # Loading and scaling the food image
         try:
             self.image = pygame.image.load(image_path)
             self.image = pygame.transform.smoothscale(self.image, [width, height])
         except pygame.error as e:
+            # If image fails to load print the error message, and create a colored rectangle as replacement
             print(f"Error loading food image: {e}. Using colored rectangle instead.")
             self.image =pygame.Surface([width, height])
             self.image.fill(red)
 
+        # Creating a rectangle for collision detection and positioning
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
 
     def draw(self):
+        """Drawing the food sprite on the screen."""
         self.SCREEN.blit(self.image, (self.x, self.y))
 
     def set_pos(self, x, y):
+        """Positioning the food to new coordinates."""
         self.x = x
         self.y = y
         self.rect.x = x
@@ -39,6 +49,7 @@ class Food:
 class Mysprite(pygame.sprite.Sprite):
     """This controls the snake initially"""
     def __init__(self, x, y, width, height, sprite_imagelist, SCREEN, speed=5, snake_color="green"):
+        """Initializing everything required for this class"""
         super().__init__()
         self.image = sprite_imagelist.get_image(0)
         self.rect = self.image.get_rect()
@@ -55,66 +66,87 @@ class Mysprite(pygame.sprite.Sprite):
         self.tile_size= snake_size
         
     def move(self, dx, dy):
+        """
+        Setting the direction for the snake to move.
+        Preventing the snake from reversing directly into itself.
+        """
         if (dx, dy) != (0, 0):
+            # Preventing the snake from turing 180 degrees
             if not (self.direction[0] == -dx and self.direction[1] == -dy):
                 self.direction = (dx, dy)
 
     def update(self):
+        """Updating the spites position."""
         self.prev_x = self.rect.x
-        self.prev_y = self.rect.y 
+        self.prev_y = self.rect.y
         self.rect.x = round(self.rect.x / self.tile_size) * self.tile_size
         self.rect.y = round(self.rect.y / self.tile_size) * self.tile_size
         dx, dy = self.direction
+        # Moving the snake over one tile
         self.rect.x += dx * self.tile_size
         self.rect.y += dy * self.tile_size
 
     def animate(self, sprite_imagelist):
+        """Updating the sprites visual appearance."""
         self.image = sprite_imagelist.get_image(0)
 
     def collide(self, other_rect):
+        """Checking if the sprite collides with another rectangle."""
         return self.rect.colliderect(other_rect)
 
     def get_x(self):
+        """Returning the x-coordinate of the sprite."""
         return self.rect.x
 
     def get_y(self):
+        """Returning the y-coordinate of the sprite."""
         return self.rect.y
 
     def get_w(self):
+        """Returning the width of the sprite."""
         return self._w
 
     def get_h(self):
+        """Returning the height of the sprite."""
         return self._h
 
     def get_rect(self):
+        """Return the collision rectangle of the sprite."""
         return self.rect
 
 class DifficultyMenu:
     """The game difficulty is controlled from this section"""
     def __init__(self, screen):
+        # Initializing fonts
         self.screen = screen
         self.font = pygame.font.Font(None, 35)
         self.title_font = pygame.font.Font(None, 50)
         
-        # Speed of each mode
+        # Defining difficulty levels with their speeds
         self.difficulties = [
             {"label": "Easy", "speed": 3},
             {"label": "Medium", "speed": 5},
             {"label": "Hard", "speed": 7}
         ]
-        
+
+        # List to store button rectangles for collision detection
         self.button_rects = []
+        # Current difficulty
         self.selected_difficulty = None
+        # Index of currently hovered button
         self.hovered_button = None
+        # Initializing button positioning
         self.update_button_positions()
 
     def update_button_positions(self):
-        # Position of the buttons
-        BUTTON_X = (self.screen.get_width() - button_width) // 2 # positioning of the button easy, medium and hard
+        """Calculate and update the positions of the difficulty buttons."""
+
+        BUTTON_X = (self.screen.get_width() - button_width) // 2
         button_count =  len(self.difficulties)
         button_total_height = button_count * (60 + 30)
         button_y_offset = (self.screen.get_height() - button_total_height) // 2
 
+        # Creating a rectangle for each button
         for i in range(button_count):
             button_rect = pygame.Rect(
                 BUTTON_X, 
@@ -125,21 +157,31 @@ class DifficultyMenu:
             self.button_rects.append(button_rect)
     
     def show(self):
+        """
+        Displaying the difficulty menu buttons.
+        Handling user interactions.
+        """
         selecting= True
         while selecting:
+            # Getting current mouse position
             mouse_pos = pygame.mouse.get_pos()
             self.hovered_button = None
-            
+
+            # Process all events
             for event in pygame.event.get():
+                # Handling window close
                 if event.type == pygame.QUIT:
                     return None
+                # Handling mouse clicks on buttons
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         for i, button_rect in enumerate(self.button_rects):
                             if button_rect.collidepoint(event.pos):
+                                # Setting the selected difficulty and exit the loop
                                 self.selected_difficulty = self.difficulties[i]["speed"]
                                 selecting = False
                                 break
+            # Check which button is being hovered based on mouse positioning
             for i, button_rect in enumerate(self.button_rects):
                 if button_rect.collidepoint(mouse_pos):
                     self.hovered_button = i
@@ -152,12 +194,17 @@ class DifficultyMenu:
             title_rect = title.get_rect(center=(self.screen.get_width() // 2, 50))
             self.screen.blit(title, title_rect)
 
+            # Drawing all difficulty menu buttons
             for i, button_rect in enumerate(self.button_rects):
+                # Hovering effect
                 button_color = (120, 120, 120) if i == self.hovered_button else (100, 100, 100)
+                # Drawing the rectangle
                 pygame.draw.rect(self.screen, button_color, button_rect, border_radius= 15)
                 pygame.draw.rect(self.screen, white, button_rect, 3, border_radius= 15)
-                
+
+                # Rendering the difficulty label
                 text = self.font.render(self.difficulties[i]["label"], True, white)
+                # Positioning of the text
                 text_rect = text.get_rect(center=button_rect.center)
                 self.screen.blit(text, text_rect)
             
@@ -168,6 +215,7 @@ class DifficultyMenu:
 class GameLoop:
     """The gameloop is responsible to run the game with default settings"""
     def __init__(self, snake_segments, food, SCREEN, sprite_imagelist, difficulty_speed, snake_color="green", background_mode="grey_white"):
+        """Initialize the main game loop."""
         self.snake_segments = snake_segments
         self.food = food
         self.SCREEN = SCREEN
@@ -179,20 +227,21 @@ class GameLoop:
         self.game_over = False
         self.snake_color = snake_color
         self.background_mode = background_mode
-        
+        # Tracking position history for the snake body segments to follow the head
         self.position_history = [(snake_segments[0].rect.x, snake_segments[0].rect.y)]
-        
+
+        # Initializing all segments with the correct speed and color
         for segment in self.snake_segments:
             segment.speed = difficulty_speed
             segment.snake_color = SNAKE_COLORS.get(snake_color, green1)
 
-    # Defualt checkerboard colors
     def draw_checkerboard(self):
+        """Drawing the checkerboard"""
         bg_config = BACKGROUND_MODES.get(self.background_mode, BACKGROUND_MODES["grey_white"])
         color1 = bg_config["color1"]
         color2 = bg_config["color2"]
         
-        # Size of the tiles
+        # Size of each tile in the checkerboard
         tile_size = CHECKERBOARD_TILE_SIZE
         for x in range(0, self.SCREEN.get_width(), tile_size):
             for y in range(0, self.SCREEN.get_height(), tile_size):
@@ -203,14 +252,17 @@ class GameLoop:
                     pygame.draw.rect(self.SCREEN, color2, rect)
 
     def run(self):
+        """This section handles movemnts, collisions, drawing and scoring"""
         game_running = True
         movement_counter = 0
         
-        # Controls the snake movements using arrow keys
+        # Main game loop
         while game_running:
+            # Handles all events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     game_running = False
+                # Hanling keyboard commands for snake movements
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
                         self.snake_segments[0].move(-1, 0)
@@ -221,35 +273,43 @@ class GameLoop:
                     elif event.key == pygame.K_DOWN:
                         self.snake_segments[0].move(0, 1)
 
+            # Controling movement speed based on the difficulty seleted by the player
             movement_counter += 1
             if movement_counter >= (10 - self.difficulty_speed):
                 movement_counter = 0
-                
+
+                # Updating the heads position
                 self.snake_segments[0].update()
                 
-                # Making new segments to follow the snake
+                # Recording new head position for body segments to follow
                 self.position_history.insert(0, (self.snake_segments[0].rect.x, self.snake_segments[0].rect.y))
-                
+
+                # Updating positions of body segments to follow the head
                 for i in range(1, len(self.snake_segments)):
                     if i < len(self.position_history):
                         self.snake_segments[i].rect.x, self.snake_segments[i].rect.y = self.position_history[i]
-                
+
+                # Maintaing position history to a reasonable size
+                # This prevents memory issues
                 if len(self.position_history) > len(self.snake_segments) + 5:
                     self.position_history.pop()
             
             for segment in self.snake_segments:
                 segment.animate(self.sprite_imagelist)
 
+            # Checking the snake ate food
             if self.food_collision():
                 self.score += 1
                 print(f"Food eaten! Score: {self.score}")
+                # Adding new segments to the snake
                 self.add_segment()
                 self.add_segment()
+                # Spawning food at random positions
                 new_x = (random.randint(0, (SCREEN_WIDTH // CHECKERBOARD_TILE_SIZE) - 1)) * CHECKERBOARD_TILE_SIZE
                 new_y = (random.randint(0, (SCREEN_HEIGHT // CHECKERBOARD_TILE_SIZE) - 1)) * CHECKERBOARD_TILE_SIZE
                 self.food.set_pos(new_x, new_y)
                 
-                # Printing the type of collision that occured
+            # Printing the type of collision that occured
             # Collision type: Snake hit itself
             if self.snake_collision():
                 print(f"Game Over! Snake hit itself. Score: {self.score}")
@@ -262,7 +322,8 @@ class GameLoop:
 
             self.draw_checkerboard()
             self.food.draw()
-            
+
+            # Drawing all snake segments with selected color
             for segment in self.snake_segments:
                 colored_image = pygame.Surface((segment.get_w(), segment.get_h()))
                 colored_image.fill(segment.snake_color)
@@ -271,22 +332,25 @@ class GameLoop:
             # Presenting the score and size of the snake
             score_text = f"Score: {self.score} | Size: {len(self.snake_segments)}"
             score_surface = self.font.render(score_text, True, black)
-            
+
+            # Background for the score
             scoreboard_bg = pygame.Surface((score_surface.get_width() + 20, score_surface.get_height() + 10))
             scoreboard_bg.set_alpha(200)
             scoreboard_bg.fill(white)
-            
+
+            # Drawing the scoreboard at the top-left corner
             self.SCREEN.blit(scoreboard_bg, (10, 10))
             self.SCREEN.blit(score_surface, (20, 15))
 
             pygame.display.flip()
             self.clock.tick(60)
 
-    # Growing the snake with new segments
-    # New segments should have the same speed and color as the snake
     def add_segment(self):
+        """Adding new segments to the snake."""
         if len(self.snake_segments) > 0:
+            # Getting the last segment as reference for position and properties
             last_segment = self.snake_segments[-1]
+            # Creating a new segment at last segment's position
             new_segment = Mysprite(
                 last_segment.get_x(),
                 last_segment.get_y(),
@@ -297,28 +361,31 @@ class GameLoop:
                 self.difficulty_speed,
                 self.snake_color
             )
-            
+
+            # Adding the new segment to the snake
             self.snake_segments.append(new_segment)
             print(f"Snake grew! New length: {len(self.snake_segments)}")
 
-    # Collisions of the snake with the food image
+
     def food_collision(self):
+        """Checking for food collision with the snakes head."""
         head_rect = self.snake_segments[0].get_rect()
         food_rect = self.food.get_rect()   
         return head_rect.colliderect(food_rect)
 
-    # Checking for collisions of the snake
     def snake_collision(self):
+        """Checking for snake collisions with its own body."""
         head_x = self.snake_segments[0].rect.x
         head_y = self.snake_segments[0].rect.y
-        
         min_collision_index = min(8, max(4, len(self.snake_segments) // 2))
-        
+
+        # Checking collisions with body segments
         for i in range(min_collision_index, len(self.snake_segments)):
             segment = self.snake_segments[i]
             segment_x = segment.rect.x
             segment_y = segment.rect.y
-            
+
+            # Check if head position matches any body segment
             if head_x == segment_x and head_y == segment_y:
                 print(f"Self collision detected: Head at ({head_x}, {head_y}) hit segment {i}")
                 return True
@@ -327,7 +394,9 @@ class GameLoop:
 
     # Checking for boundaries
     def check_bounds(self):
+        """Check if the snake is outside the game window boundaries"""
         head = self.snake_segments[0]
+        # Check if the head position is outside the boundary
         if (head.get_x() < 0 or 
             head.get_x() + head.get_w() > SCREEN_WIDTH or
             head.get_y() < 0 or 
@@ -336,3 +405,4 @@ class GameLoop:
         return False
     # No changes made 21/07/2026
     # No changes made 21/07/2026
+    

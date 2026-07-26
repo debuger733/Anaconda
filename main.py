@@ -1,4 +1,5 @@
-# main.py
+"""This is the main file."""
+
 # Importing and linking other files needed to run the game
 import pygame
 from imagelist import ImageList
@@ -12,17 +13,17 @@ from button_info import (
 )
 from settings import *
 
-class Menu:
-    """This class creates the Main menu"""
 
+class Menu:
+    """This class creates the Main menu."""
 
     def __init__(self, screen):
+        """This section initializes the Main menu elements."""
         self.screen = screen
         self.font = pygame.font.Font(None, 25)
         self.logo_loaded = False
         self.logo = None
         self.logo_rect = None
-        
         # Loading the logo
         try:
             self.logo = pygame.image.load(LOGO_PATH)
@@ -51,8 +52,7 @@ class Menu:
         self.selected_background = "grey_white"
 
     def update_button_positions(self):
-        """Updating the position of the buttons"""
-
+        """Updating the position of the buttons."""
         # Calculate and updating the positions of the buttons
         self.button_rects = []
         button_x = (self.screen.get_width() - button_width) // 2
@@ -71,16 +71,17 @@ class Menu:
             self.button_rects.append(button_rect)
 
     def show_menu(self):
+        """Updating button positions."""
         self.update_button_positions()
 
     def play(self, player_name=None):
-        """This section controls the play button"""
-
-
+        """This section controls the play button."""
+        # If no name is entered show the input dialog
         if player_name is None:
             name_input = PlayerNameInput(SCREEN)
             player_name = name_input.show()
 
+        # Exit if player canceled name input
         if player_name is None:
             return
 
@@ -88,6 +89,7 @@ class Menu:
         difficulty_menu = DifficultyMenu(SCREEN)
         selected_speed = difficulty_menu.show()
 
+        # Exit if player cancelled difficulty selection
         if selected_speed is None:
             return
 
@@ -107,6 +109,7 @@ class Menu:
             game_over = GameOverScreen(SCREEN, game_loop.score, player_name, difficulty_label)
             result = game_over.show()
 
+            # If player chose to try again, restart the game with the same player name
             if result == "try_again":
                 self.play(player_name)
 
@@ -114,21 +117,20 @@ class Menu:
             print(f"Error starting game: {exc}")
 
     def customize(self):
-        """This sections controls the Customization button"""
-
-
+        """This sections controls the Customization button."""
         customize_screen = CustomizeScreen(SCREEN)
         snake_color, background = customize_screen.show()
 
+        # Checking if the player did customizing
+        # Saving them to start the game with
         if snake_color and background:
             self.selected_snake_color = snake_color
             self.selected_background = background
+            # Printing the customization done by the player
             print(f"Settings updated - Snake: {snake_color}, Background: {background}")
 
     def info(self):
-        """This section controls the Information button"""
-
-
+        """This section controls the Information button."""
         instructions = InstructionsScreen(SCREEN)
         instructions.show()
 
@@ -141,7 +143,6 @@ class Menu:
 
 def main():
     """Main function"""
-
     # Initialize pygame
     pygame.init()
     pygame.display.set_caption("Snake Core")
@@ -165,18 +166,23 @@ def main():
             # Closing the game if user clicks close
             if event.type == pygame.QUIT:
                 game_running = False
+            # Handling mouse clicks on buttons
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
+                    # Checking if the mouse is clicked on any button
                     for i, button_rect in enumerate(menu.button_rects):
                         if button_rect.collidepoint(event.pos):
+                            # Proceeding based on the button clicked on
                             result = menu.menu_options[i]["command"]()
+                            # Exit the game if exit comman was triggered
                             if result == "exit":
                                 game_running = False
                             break
+            # Resizing of the window
             elif event.type == pygame.VIDEORESIZE:
                 # Repositioning if the window was resized
                 menu.update_button_positions()
-
+        # Checking which button the mouse pointer is currently hovering over
         for i, button_rect in enumerate(menu.button_rects):
             if button_rect.collidepoint(mouse_pos):
                 menu.hovered_button = i
@@ -190,6 +196,7 @@ def main():
 
         # Drawing all Main menu buttons
         for i, button_rect in enumerate(menu.button_rects):
+            # Checking if the button is being hovered
             is_hovered = menu.hovered_button == i
             button_col = button_hover_color if is_hovered else button_color
 
@@ -214,3 +221,4 @@ if __name__ == "__main__":
     # No changes made 23/06/2026
     # No changes made 29/06/2026
     # No changes made 02/07/2026
+    
