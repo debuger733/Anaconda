@@ -8,7 +8,12 @@ pygame.init()
 
 # Allowing the user to enter their name 
 class GameOverScreen:
+<<<<<<< HEAD
     """This prints the gameover screen."""
+=======
+
+    """This prints the gameover screen"""
+>>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
 
     def __init__(self, screen, score, player_name, difficulty):
         # Initialize the Game Over screen
@@ -71,7 +76,13 @@ class GameOverScreen:
         print(f"Score saved: {self.player_name} - Score: {self.score} - Difficulty: {self.difficulty}")
     
     def show(self):
+<<<<<<< HEAD
         """Displaying the game over screen."""
+=======
+        """Displaying the game over screen"""
+
+
+>>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
         waiting = True
         clock = pygame.time.Clock()
         
@@ -129,10 +140,15 @@ class GameOverScreen:
             clock.tick(60)
 
 class ExitConfirmDialog:
+<<<<<<< HEAD
     """
     This asks for exit confirmation
     It prevents from unnecessarily exiting the game
     """
+=======
+    """This asks for exit confirmation"""
+    """It prevents from unnecessarily exiting the game"""
+>>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
 
 
     def __init__(self, screen):
@@ -167,7 +183,13 @@ class ExitConfirmDialog:
         self.button_rects["no"] = pygame.Rect(no_x, button_y, button_width, button_height)
     
     def show(self):
+<<<<<<< HEAD
         """Displaying the exit confirmation screen."""
+=======
+        """Displaying the exit confirmation screen"""
+
+
+>>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
         waiting = True
         clock = pygame.time.Clock()
 
@@ -239,7 +261,11 @@ class PlayerNameInput:
         self.hovered = False
     
     def show(self):
+<<<<<<< HEAD
         """Displaying the Player Name input screen."""
+=======
+        """Displaying the Player Name input screen"""
+>>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
         inputting= True
 
         while inputting:
@@ -418,7 +444,11 @@ class CustomizeScreen:
         self.update_button_positions()
     
     def update_button_positions(self):
+<<<<<<< HEAD
         """Calculate and update positioning of the buttons."""
+=======
+        """Calculate and update positioning of the buttons"""
+>>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
         self.button_rects = {}
         
         # Postioning the snake color buttons
@@ -437,7 +467,11 @@ class CustomizeScreen:
         self.done_rect = pygame.Rect(self.screen.get_width() // 2 - 75, 400, 150, 50)
     
     def show(self):
+<<<<<<< HEAD
         """Displaying the Customize screen."""
+=======
+        """Displaying the Customize screen"""
+>>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
         customizing = True
         clock = pygame.time.Clock()
         
@@ -453,7 +487,11 @@ class CustomizeScreen:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         return None, None
+<<<<<<< HEAD
                 # Check if any buttons were clicked
+=======
+                    # Check if any buttons were clicked
+>>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         # Check if any button was clicked
@@ -482,7 +520,11 @@ class CustomizeScreen:
             # Background color of the customization screen
             self.screen.fill((33, 89, 77))
             
+<<<<<<< HEAD
             # Render and display title
+=======
+            # Render customization screen title
+>>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
             title = self.title_font.render("Customize Game", True, white)
             self.screen.blit(title, (self.screen.get_width() // 2 - title.get_width() // 2, 20))
 
