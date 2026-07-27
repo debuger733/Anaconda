@@ -13,15 +13,10 @@ from button_info import (
 )
 from settings import *
 
-<<<<<<< HEAD
 
 class Menu:
     """This class creates the Main menu."""
 
-=======
-class Menu:
-    """This class creates the Main menu"""
->>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
     def __init__(self, screen):
         """This section initializes the Main menu elements."""
         self.screen = screen
@@ -34,24 +29,14 @@ class Menu:
         try:
             self.logo = pygame.image.load(LOGO_PATH)
             self.logo = pygame.transform.smoothscale(self.logo, (LOGO_W, LOGO_H))
-<<<<<<< HEAD
             # Position the logo at the top center of the screen
             self.logo_rect = self.logo.get_rect(center=(self.screen.get_width() // 2, 110))
-=======
-            self.logo_rect = self.logo.get_rect(
-                center=(self.screen.get_width() // 2, 110)
-            )
->>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
             self.logo_loaded = True
         except Exception as exc:
             print(f"Error loading logo: {exc}")
             self.logo_loaded = False
 
-<<<<<<< HEAD
         # Buttons of the Main menu
-=======
-        # Buttons
->>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
         self.menu_options = [
             {"label": "Play", "command": self.play},
             {"label": "Customize", "command": self.customize},
@@ -59,10 +44,7 @@ class Menu:
             {"label": "Exit", "command": self.exit_game},
         ]
 
-<<<<<<< HEAD
         # Initializing button tracking variables
-=======
->>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
         self.button_rects = []
         self.hovered_button = None
 
@@ -94,11 +76,8 @@ class Menu:
         self.update_button_positions()
 
     def play(self, player_name=None):
-<<<<<<< HEAD
         """This section controls the play button."""
         # If no name is entered show the input dialog
-=======
->>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
         if player_name is None:
             name_input = PlayerNameInput(SCREEN)
             player_name = name_input.show()
@@ -107,17 +86,11 @@ class Menu:
         if player_name is None:
             return
 
-<<<<<<< HEAD
         # Difficulty selection
         difficulty_menu = DifficultyMenu(SCREEN)
         selected_speed = difficulty_menu.show()
 
         # Exit if player cancelled difficulty selection
-=======
-        difficulty_menu = DifficultyMenu(SCREEN)
-        selected_speed = difficulty_menu.show()
-
->>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
         if selected_speed is None:
             return
 
@@ -137,10 +110,7 @@ class Menu:
             game_over = GameOverScreen(SCREEN, game_loop.score, player_name, difficulty_label)
             result = game_over.show()
 
-<<<<<<< HEAD
             # If player chose to try again, restart the game with the same player name
-=======
->>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
             if result == "try_again":
                 self.play(player_name)
 
@@ -152,11 +122,8 @@ class Menu:
         customize_screen = CustomizeScreen(SCREEN)
         snake_color, background = customize_screen.show()
 
-<<<<<<< HEAD
         # Checking if the player did customizing
         # Saving them to start the game with
-=======
->>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
         if snake_color and background:
             self.selected_snake_color = snake_color
             self.selected_background = background
@@ -180,31 +147,22 @@ def main():
     # Initialize pygame
     pygame.init()
     pygame.display.set_caption("Snake Core")
-<<<<<<< HEAD
 
     # Initialize the main menu
-=======
->>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
     menu = Menu(SCREEN)
     menu.show_menu()
 
     game_running = True
 
-<<<<<<< HEAD
     # Main event loop
     # This runs the game untill the user exists
-=======
->>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
     while game_running:
 
         # Getting current mouse position to hover the buttons
         mouse_pos = pygame.mouse.get_pos()
         menu.hovered_button = None
 
-<<<<<<< HEAD
         # Processing all pygame events
-=======
->>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
         for event in pygame.event.get():
             # Closing the game if user clicks close
             if event.type == pygame.QUIT:
@@ -237,10 +195,7 @@ def main():
         if menu.logo_loaded:
             SCREEN.blit(menu.logo, menu.logo_rect)
 
-<<<<<<< HEAD
         # Drawing all Main menu buttons
-=======
->>>>>>> 92b716b3d17437fdecd56f066320081ce7ab6b70
         for i, button_rect in enumerate(menu.button_rects):
             # Checking if the button is being hovered
             is_hovered = menu.hovered_button == i
